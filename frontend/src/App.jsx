@@ -1,0 +1,42 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ScrollToTop from './components/ScrollToTop';
+import Home from './pages/Home';
+import Rates from './pages/Rates';
+import About from './pages/About';
+import Services from './pages/Services';
+import Terms from './pages/Terms';
+import Help from './pages/Help';
+import Tracking from './pages/Tracking';
+import CoverageMap from './pages/CoverageMap';
+import Partnership from './pages/Partnership';
+
+import { Toaster } from 'react-hot-toast';
+import { FloatingWhatsApp } from 'react-floating-whatsapp';
+
+import AILiveChat from './components/AILiveChat';
+
+function App() {
+  return (
+    <Router>
+      <ScrollToTop />
+      
+      {/* Global Widgets */}
+      <Toaster position="top-center" reverseOrder={false} />
+      <AILiveChat />
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/rates" element={<Rates />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/help" element={<Help />} />
+        <Route path="/tracking" element={<Tracking />} />
+        <Route path="/coverage-map" element={<CoverageMap />} />
+        <Route path="/partnership" element={<Partnership />} />
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;

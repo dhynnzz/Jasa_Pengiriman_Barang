@@ -1,0 +1,60 @@
+/* Custom styles for react-leaflet to ensure it displays properly */
+.leaflet-container {
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+}
+
+/* Custom Marker Styling (Neon Glow) */
+.custom-glow-marker {
+    background: transparent;
+    border: none;
+}
+
+.marker-pulse {
+    width: 16px;
+    height: 16px;
+    background-color: #0ea5e9; /* Cyan */
+    border-radius: 50%;
+    position: relative;
+    box-shadow: 0 0 10px #0ea5e9, 0 0 20px #0ea5e9;
+    animation: pulse 2s infinite;
+    cursor: pointer;
+}
+
+.marker-pulse.type-pusat { background-color: #f97316; box-shadow: 0 0 10px #f97316, 0 0 20px #f97316; }
+.marker-pulse.type-regional { background-color: #3b82f6; box-shadow: 0 0 10px #3b82f6, 0 0 20px #3b82f6; }
+.marker-pulse.type-cabang { background-color: #06b6d4; box-shadow: 0 0 10px #06b6d4, 0 0 20px #06b6d4; }
+.marker-pulse.type-mitra { background-color: #8b5cf6; box-shadow: 0 0 10px #8b5cf6, 0 0 20px #8b5cf6; }
+
+@keyframes pulse {
+    0% { transform: scale(0.95); opacity: 0.8; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(0.95); opacity: 0.8; }
+}
+
+/* Custom Popup Style */
+.leaflet-popup-content-wrapper {
+    background: rgba(15, 23, 42, 0.9) !important;
+    backdrop-filter: blur(8px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: white !important;
+    border-radius: 12px !important;
+    padding: 0 !important;
+}
+
+.leaflet-popup-tip {
+    background: rgba(15, 23, 42, 0.9) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.leaflet-popup-content {
+    margin: 0 !important;
+    width: 260px !important;
+}
+
+/* Hide leaflet attribution in this specific custom app if needed */
+.leaflet-control-attribution {
+    background: rgba(15, 23, 42, 0.7) !important;
+    color: #94a3b8 !important;
+}

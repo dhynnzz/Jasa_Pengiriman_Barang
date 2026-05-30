@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+/* Fix Leaflet zoom control overlap with absolute badge */
+.leaflet-top.leaflet-left {
+  margin-top: 45px !important;
+}
