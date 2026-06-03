@@ -1,6 +1,7 @@
 {
     "version": 2,
-    "framework": null,
+    "buildCommand": "echo \"Skip build\"",
+    "outputDirectory": ".",
     "functions": {
         "api/index.php": {
             "runtime": "vercel-php@0.6.1"
