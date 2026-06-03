@@ -21,7 +21,43 @@ class RateController extends Controller
         $berat = $request->berat;
         $layanan = $request->layanan;
 
-        // Base Pricing
+        // 1. Cek di tabel Rates terlebih dahulu
+        // Pencarian menggunakan 'like' agar tidak sensitif huruf besar/kecil (case-insensitive)
+        $rate = \App\Models\Rate::where('origin', 'like', "%{$asal}%")
+                ->where('destination', 'like', "%{$tujuan}%")
+                ->first();
+
+        if ($rate) {
+            // Gunakan harga dari database
+            $basePrice = 0;
+            if ($layanan === 'Ekonomi' || $layanan === 'Reguler') {
+                $basePrice = $rate->regular_price;
+            } else if ($layanan === 'Express') {
+                $basePrice = $rate->express_price;
+            } else if ($layanan === 'Cargo') {
+                $basePrice = $rate->cargo_price;
+            } else {
+                $basePrice = $rate->regular_price;
+            }
+
+            $totalBiaya = $basePrice * $berat;
+            $estimasi = $rate->estimated_time ?: "Hubungi Admin";
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'total' => $totalBiaya,
+                    'biaya_berat' => $totalBiaya,
+                    'biaya_jarak' => 0,
+                    'rute' => "{$rate->origin} ➔ {$rate->destination} (Berat: {$berat} kg)",
+                    'estimasi' => $estimasi,
+                    'teks_jarak' => "Sesuai tarif flat rute admin",
+                    'is_map_success' => true
+                ]
+            ]);
+        }
+
+        // 2. Jika tidak ada di tabel, gunakan sistem kalkulasi jarak lama (Fallback)
         $basePrice = 25000;
         $estimasi = "1-2 Hari Kerja";
         if ($layanan === 'Ekonomi') {
@@ -41,23 +77,20 @@ class RateController extends Controller
         $isSuccess = false;
 
         if ($coordAsal && $coordTujuan) {
-            // Coba ambil jarak jalan raya (OSRM)
             $drivingData = $this->getDrivingDistance($coordAsal['lon'], $coordAsal['lat'], $coordTujuan['lon'], $coordTujuan['lat']);
             
             if ($drivingData && $drivingData['distance'] > 0) {
-                // Jarak jalan raya berhasil
                 $distanceKm = round($drivingData['distance']);
                 $durationSec = $drivingData['duration'];
                 
-                // Hitung estimasi waktu berdasarkan durasi berkendara (OSRM)
                 $hours = ceil($durationSec / 3600);
                 
                 if ($layanan === 'Ekonomi') {
-                    $hours += 48; // Tambahan waktu sortir & antrean (2 Hari)
+                    $hours += 48; 
                 } else if ($layanan === 'Express') {
-                    $hours += 6; // Prioritas cepat
+                    $hours += 6; 
                 } else {
-                    $hours += 24; // Standar (1 Hari ekstra)
+                    $hours += 24; 
                 }
                 
                 if ($hours >= 24) {
@@ -72,15 +105,13 @@ class RateController extends Controller
                     $estimasi = "{$hours} Jam";
                 }
 
-                $biayaJarak = $distanceKm * 200; // Rp 200/km Jarak Darat
-                $teksJarak = "Jarak Darat (Jalan Raya): {$distanceKm} km (Tarif: Rp 200/km)";
+                $biayaJarak = $distanceKm * 200;
+                $teksJarak = "Jarak Darat: {$distanceKm} km (Tarif: Rp 200/km)";
                 $isSuccess = true;
             } else {
-                // Fallback ke jarak lurus (Haversine)
                 $straightDistance = $this->calculateHaversineDistance($coordAsal['lat'], $coordAsal['lon'], $coordTujuan['lat'], $coordTujuan['lon']);
                 $distanceKm = round($straightDistance);
                 
-                // Estimasi kasar jarak lurus (asumsi truk 40km/jam)
                 $hours = ceil($distanceKm / 40);
                 
                 if ($layanan === 'Ekonomi') {
@@ -104,11 +135,10 @@ class RateController extends Controller
                 }
 
                 $biayaJarak = $distanceKm * 200;
-                $teksJarak = "Jarak Udara/Lurus: {$distanceKm} km (Tarif: Rp 200/km)";
+                $teksJarak = "Jarak Udara: {$distanceKm} km (Tarif: Rp 200/km)";
                 $isSuccess = true;
             }
         } else {
-            // Fallback jika tidak ketemu
             $biayaJarak = 15000;
             $teksJarak = "*Lokasi tidak akurat, menggunakan tarif jarak rata-rata";
         }

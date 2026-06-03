@@ -16,9 +16,15 @@ Route::post('/admin/login', [\App\Http\Controllers\AuthController::class, 'login
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/admin/logout', [\App\Http\Controllers\AuthController::class, 'logout']);
     
+    // Admin Dashboard Statistics
+    Route::get('/admin/dashboard-stats', [\App\Http\Controllers\Admin\DashboardController::class, 'index']);
+
     // Admin Shipments Management
     Route::apiResource('/admin/shipments', \App\Http\Controllers\Admin\ShipmentController::class);
-    Route::post('/admin/shipments/{shipment}/history', [\App\Http\Controllers\Admin\ShipmentController::class, 'addHistory']);
+    Route::post('/admin/shipments/{id}/history', [\App\Http\Controllers\Admin\ShipmentController::class, 'addHistory']);
+
+    // Admin Rates Management
+    Route::apiResource('/admin/rates', \App\Http\Controllers\Admin\RateController::class);
 });
 
 Route::post('/calculate-rate', [RateController::class, 'calculate'])->name('api.rates.calculate');

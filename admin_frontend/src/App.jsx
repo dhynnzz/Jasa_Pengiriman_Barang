@@ -5,6 +5,7 @@ import { Toaster } from 'react-hot-toast';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Shipments from './pages/Shipments';
+import Rates from './pages/Rates';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -36,6 +37,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Shipments />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/rates" 
+          element={
+            <ProtectedRoute>
+              <Rates />
             </ProtectedRoute>
           } 
         />

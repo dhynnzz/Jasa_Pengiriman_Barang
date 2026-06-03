@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { Package, LayoutDashboard, LogOut, Menu } from 'lucide-react';
+import { Package, LayoutDashboard, LogOut, Menu, IndianRupee } from 'lucide-react';
 
 export default function AdminLayout({ children, title }) {
   const navigate = useNavigate();
@@ -14,6 +14,7 @@ export default function AdminLayout({ children, title }) {
   const navItems = [
     { name: 'Dashboard', path: '/', icon: <LayoutDashboard className="w-5 h-5 mr-3" /> },
     { name: 'Manajemen Resi', path: '/shipments', icon: <Package className="w-5 h-5 mr-3" /> },
+    { name: 'Manajemen Tarif', path: '/rates', icon: <IndianRupee className="w-5 h-5 mr-3" /> },
   ];
 
   return (
