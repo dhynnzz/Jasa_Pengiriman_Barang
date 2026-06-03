@@ -41,7 +41,7 @@ class ShipmentController extends Controller
 
         // Auto create first history
         $shipment->histories()->create([
-            'status' => 'Picked Up',
+            'status_title' => 'Picked Up',
             'location' => $validated['origin'],
             'description' => 'Paket telah diterima oleh agen Nabila Trans',
             'occurred_at' => now()
@@ -108,9 +108,14 @@ class ShipmentController extends Controller
             'description' => 'required|string'
         ]);
 
-        $validated['occurred_at'] = now();
+        $historyData = [
+            'status_title' => $validated['status'],
+            'location' => $validated['location'],
+            'description' => $validated['description'],
+            'occurred_at' => now(),
+        ];
 
-        $history = $shipment->histories()->create($validated);
+        $history = $shipment->histories()->create($historyData);
 
         // Auto update shipment current status
         $shipment->update([
