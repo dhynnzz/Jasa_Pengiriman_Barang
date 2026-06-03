@@ -94,8 +94,8 @@ export default function AILiveChat() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.9 }}
             transition={{ duration: 0.3 }}
-            className="fixed bottom-6 right-6 w-[350px] bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col z-50 border border-gray-100"
-            style={{ height: '500px', zIndex: 9999 }}
+            className="fixed bottom-4 left-4 right-4 md:left-auto md:bottom-6 md:right-6 md:w-[350px] h-[400px] md:h-[500px] max-h-[80vh] bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col z-50 border border-gray-100"
+            style={{ zIndex: 9999 }}
           >
             {/* Header */}
             <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-4 text-white flex items-center justify-between">
