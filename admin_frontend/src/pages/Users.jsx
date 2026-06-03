@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AdminLayout from '../components/AdminLayout';
-import { Users as UsersIcon, Shield, Plus, Edit2, Trash2, Key, Mail, User } from 'lucide-react';
+import { Users as UsersIcon, Shield, Plus, Edit2, Trash2, Key, Mail, User, Eye, EyeOff } from 'lucide-react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
@@ -12,6 +12,7 @@ export default function Users() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -234,14 +235,23 @@ export default function Users() {
                       <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center">
                         <Key className="w-4 h-4 mr-1 text-gray-400" /> Password
                       </label>
-                      <input 
-                        type="password" 
-                        required={!isEditMode} // Require password on create, optional on edit
-                        value={formData.password} 
-                        onChange={e => setFormData({...formData, password: e.target.value})} 
-                        className="block w-full border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-2.5 px-3 border" 
-                        placeholder={isEditMode ? "Kosongkan jika tidak ingin mengubah password" : "Minimal 6 karakter"} 
-                      />
+                      <div className="relative">
+                        <input 
+                          type={showPassword ? "text" : "password"}
+                          required={!isEditMode}
+                          value={formData.password} 
+                          onChange={e => setFormData({...formData, password: e.target.value})} 
+                          className="block w-full border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-2.5 px-3 pr-10 border" 
+                          placeholder={isEditMode ? "Kosongkan jika tidak ingin mengubah password" : "Minimal 6 karakter"} 
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none"
+                        >
+                          {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                        </button>
+                      </div>
                       {isEditMode && (
                         <p className="mt-1 text-xs text-amber-600 font-medium">*Biarkan kosong jika tidak ingin ganti password.</p>
                       )}
