@@ -39,28 +39,7 @@ export default function Partnerships() {
       await axios.put(`${API_URL}/admin/partnerships/${id}`, { status: newStatus }, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      toast.success('Status berhasil diperbarui');
-
-      // Send WhatsApp Notification
-      if (window.confirm(`Status berhasil diubah. Buka WhatsApp untuk mengirim notifikasi ke ${partnerName}?`)) {
-        let phone = partnerPhone.replace(/\D/g, '');
-        if (phone.startsWith('0')) {
-          phone = '62' + phone.substring(1);
-        }
-        
-        let message = '';
-        if (newStatus === 'Disetujui') {
-          message = `Halo ${partnerName},\n\nSelamat! Pengajuan Anda sebagai Agen Nabila Trans telah *DISETUJUI*. 🎉\n\nTim kami akan segera menghubungi Anda kembali untuk proses penandatanganan kontrak dan setup sistem aplikasi.\n\nTerima kasih,\n*Nabila Trans*`;
-        } else if (newStatus === 'Ditolak') {
-          message = `Halo ${partnerName},\n\nTerima kasih atas minat Anda bergabung bersama Nabila Trans. Mohon maaf, setelah melakukan evaluasi, pengajuan agen Anda *BELUM DAPAT KAMI TERIMA* pada saat ini karena belum memenuhi kriteria penempatan wilayah kami.\n\nTetap semangat dan sukses selalu untuk Anda!\n\nTerima kasih,\n*Nabila Trans*`;
-        }
-        
-        if (message) {
-          const waUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-          window.open(waUrl, '_blank');
-        }
-      }
-
+      toast.success('Status berhasil diperbarui & Pesan WA otomatis terkirim!');
     } catch (error) {
       toast.error('Gagal memperbarui status');
       fetchPartnerships(); // revert on fail
