@@ -54,6 +54,29 @@ export default function Reports() {
     window.print();
   };
 
+  const handleExportExcel = () => {
+    // Buat header CSV
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += "Tanggal,No. Resi,Rute Asal,Rute Tujuan,Status,Pendapatan\n";
+
+    // Isi baris data
+    data.transactions.forEach((trx) => {
+      const date = new Date(trx.created_at).toLocaleDateString('id-ID');
+      const row = `${date},${trx.tracking_number},${trx.origin || 'Asal'},${trx.destination || 'Tujuan'},${trx.status},${trx.total_price}`;
+      csvContent += row + "\n";
+    });
+
+    // Proses download file
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `Laporan_Bulanan_NabilaTrans_${selectedMonth}_${selectedYear}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast.success('File Excel berhasil diunduh');
+  };
+
   return (
     <AdminLayout title="Laporan Keuangan & Operasional">
       
@@ -96,13 +119,22 @@ export default function Reports() {
           </button>
         </div>
         
-        <button 
-          onClick={handlePrint}
-          className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
-        >
-          <Download className="w-4 h-4 mr-2" />
-          Cetak Laporan (PDF)
-        </button>
+        <div className="flex items-center gap-3">
+          <button 
+            onClick={handleExportExcel}
+            className="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-medium"
+          >
+            <Download className="w-4 h-4 mr-2" />
+            Ekspor Excel (CSV)
+          </button>
+          <button 
+            onClick={handlePrint}
+            className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+          >
+            <Download className="w-4 h-4 mr-2" />
+            Cetak PDF
+          </button>
+        </div>
       </div>
 
       {loading ? (
