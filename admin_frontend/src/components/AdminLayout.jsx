@@ -29,7 +29,7 @@ export default function AdminLayout({ children, title }) {
     { name: 'Laporan', path: '/reports', icon: <PieChart className="w-5 h-5 mr-3" /> },
     { name: 'Manajemen Resi', path: '/shipments', icon: <Package className="w-5 h-5 mr-3" /> },
     { name: 'Manajemen Tarif', path: '/rates', icon: <IndianRupee className="w-5 h-5 mr-3" /> },
-    { name: 'Kurir & Armada', path: '/drivers', icon: <Truck className="w-5 h-5 mr-3" /> },
+    { name: 'Manajemen Kurir', path: '/drivers', icon: <Truck className="w-5 h-5 mr-3" /> },
     { name: 'Cabang & Agen', path: '/branches', icon: <Store className="w-5 h-5 mr-3" /> },
     { name: 'Kemitraan Baru', path: '/partnerships', icon: <Handshake className="w-5 h-5 mr-3" /> },
     { name: 'Pengguna', path: '/users', icon: <Users className="w-5 h-5 mr-3" /> },

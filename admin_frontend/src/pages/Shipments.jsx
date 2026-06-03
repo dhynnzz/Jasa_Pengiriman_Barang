@@ -8,6 +8,7 @@ import { Plus, Search, Edit2, MapPin, Trash2, Printer, Download } from 'lucide-r
 export default function Shipments() {
   const navigate = useNavigate();
   const [shipments, setShipments] = useState([]);
+  const [drivers, setDrivers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -45,8 +46,23 @@ export default function Shipments() {
     }
   };
 
+  const fetchDrivers = async () => {
+    try {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+      const token = localStorage.getItem('adminToken');
+      const response = await axios.get(`${API_URL}/admin/drivers`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      // Filter only active/available drivers if needed, or get all
+      setDrivers(response.data);
+    } catch (error) {
+      console.error('Gagal mengambil data kurir', error);
+    }
+  };
+
   useEffect(() => {
     fetchShipments();
+    fetchDrivers();
   }, []);
 
   const handleAddSubmit = async (e) => {
@@ -315,7 +331,12 @@ export default function Shipments() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700">Nama Kurir (Opsional)</label>
-                      <input type="text" value={formData.driver_name} onChange={e => setFormData({...formData, driver_name: e.target.value})} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-2 px-3 border" placeholder="Nama kurir yang bertugas" />
+                      <select value={formData.driver_name} onChange={e => setFormData({...formData, driver_name: e.target.value})} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-2 px-3 border bg-white">
+                        <option value="">-- Pilih Kurir --</option>
+                        {drivers.map(d => (
+                          <option key={d.id} value={d.name}>{d.name} ({d.vehicle_type})</option>
+                        ))}
+                      </select>
                     </div>
                   </div>
                 </div>

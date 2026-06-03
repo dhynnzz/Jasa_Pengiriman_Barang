@@ -138,7 +138,7 @@ export default function Tracking() {
                     </div>
                     <div>
                       <p className="text-xs text-gray-400 font-bold uppercase tracking-wider mb-0.5">Pengemudi yang ditugaskan</p>
-                      <h4 className="font-bold text-blue-950">{shipment.driver_name}</h4>
+                      <h4 className="font-bold text-blue-950">{shipment.driver_name || 'Belum Ditugaskan'}</h4>
                       <div className="flex items-center gap-1 text-orange-400 text-xs mt-1">
                         &#9733;&#9733;&#9733;&#9733;&#9733; <span className="text-gray-400 ml-1">4.8 (214)</span>
                       </div>

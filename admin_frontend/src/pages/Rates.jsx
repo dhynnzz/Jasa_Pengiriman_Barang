@@ -17,9 +17,9 @@ export default function Rates() {
   const [formData, setFormData] = useState({
     origin: '',
     destination: '',
-    regular_price: 0,
-    express_price: 0,
-    cargo_price: 0,
+    regular_price: '',
+    express_price: '',
+    cargo_price: '',
     estimated_time: ''
   });
 
@@ -47,9 +47,9 @@ export default function Rates() {
     setFormData({
       origin: '',
       destination: '',
-      regular_price: 0,
-      express_price: 0,
-      cargo_price: 0,
+      regular_price: '',
+      express_price: '',
+      cargo_price: '',
       estimated_time: ''
     });
     setIsAddModalOpen(true);
@@ -161,13 +161,6 @@ export default function Rates() {
 
             {/* Actions */}
             <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
-              <button
-                onClick={handleImport}
-                className="w-full sm:w-auto flex items-center justify-center px-4 py-2 bg-emerald-50 text-emerald-600 border border-emerald-200 rounded-lg hover:bg-emerald-100 transition-colors font-medium text-sm"
-              >
-                <Upload className="w-4 h-4 mr-2" />
-                Upload CSV
-              </button>
               <button
                 onClick={openAddModal}
                 className="w-full sm:w-auto flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm shadow-sm hover:shadow"
@@ -319,7 +312,7 @@ export default function Rates() {
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                               <span className="text-gray-500 sm:text-sm">Rp</span>
                             </div>
-                            <input type="number" min="0" required value={formData.regular_price} onChange={e => setFormData({...formData, regular_price: e.target.value})} className="block w-full pl-9 border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-2 px-3 border" placeholder="0" />
+                            <input type="number" min="0" step="1000" required value={formData.regular_price} onChange={e => setFormData({...formData, regular_price: e.target.value})} className="block w-full pl-9 border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-2 px-3 border" placeholder="Kosongkan jika tidak ada" />
                           </div>
                         </div>
                         <div>
@@ -328,7 +321,7 @@ export default function Rates() {
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                               <span className="text-gray-500 sm:text-sm">Rp</span>
                             </div>
-                            <input type="number" min="0" required value={formData.express_price} onChange={e => setFormData({...formData, express_price: e.target.value})} className="block w-full pl-9 border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-2 px-3 border" placeholder="0" />
+                            <input type="number" min="0" step="1000" required value={formData.express_price} onChange={e => setFormData({...formData, express_price: e.target.value})} className="block w-full pl-9 border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-2 px-3 border" placeholder="Kosongkan jika tidak ada" />
                           </div>
                         </div>
                         <div>
@@ -337,7 +330,7 @@ export default function Rates() {
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                               <span className="text-gray-500 sm:text-sm">Rp</span>
                             </div>
-                            <input type="number" min="0" required value={formData.cargo_price} onChange={e => setFormData({...formData, cargo_price: e.target.value})} className="block w-full pl-9 border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-2 px-3 border" placeholder="0" />
+                            <input type="number" min="0" step="1000" required value={formData.cargo_price} onChange={e => setFormData({...formData, cargo_price: e.target.value})} className="block w-full pl-9 border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-2 px-3 border" placeholder="Kosongkan jika tidak ada" />
                           </div>
                         </div>
                       </div>
