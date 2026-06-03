@@ -45,4 +45,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/admin/partnerships', [PartnershipController::class, 'index']);
     Route::put('/admin/partnerships/{id}', [PartnershipController::class, 'update']);
     Route::delete('/admin/partnerships/{id}', [PartnershipController::class, 'destroy']);
+    
+    // Users (Admin management)
+    Route::apiResource('/admin/users', \App\Http\Controllers\UserController::class);
+    
+    // Settings
+    Route::get('/admin/settings', [\App\Http\Controllers\SettingController::class, 'index']);
+    Route::post('/admin/settings', [\App\Http\Controllers\SettingController::class, 'update']);
 });
