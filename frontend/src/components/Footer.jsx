@@ -21,28 +21,29 @@ export default function Footer() {
               <span className="font-bold text-xl text-blue-950">CV Nabila Trans</span>
             </Link>
             <p className="text-gray-500 text-sm mb-4 md:mb-6 leading-relaxed">
-              CV Nabila Trans adalah mitra ekspedisi terpercaya yang berkomitmen memberikan layanan pengiriman cepat, aman, dan efisien. Didukung teknologi pelacakan terkini untuk memastikan setiap paket Anda tiba di tujuan dengan selamat.
+              Mitra logistik terpercaya Anda. Menghadirkan layanan pengiriman barang yang cepat, aman, dan efisien dengan jangkauan luas di seluruh wilayah Jawa dan Bali.
             </p>
           </div>
 
-          {/* Perusahaan */}
+          {/* Layanan */}
           <div>
             <h4 className="text-blue-950 font-bold mb-4">Perusahaan</h4>
             <ul className="space-y-2 text-gray-500 text-sm">
               <li><Link to="/about" className="hover:text-blue-600 transition-colors">Tentang Kami</Link></li>
-              <li><Link to="/services" className="hover:text-blue-600 transition-colors">Layanan Kami</Link></li>
-              <li><Link to="/coverage-map" className="hover:text-blue-600 transition-colors">Jangkauan Area</Link></li>
               <li><Link to="/branches" className="hover:text-blue-600 transition-colors">Lokasi Cabang</Link></li>
               <li><Link to="/partnership" className="hover:text-blue-600 transition-colors">Kemitraan Agen</Link></li>
+              <li><Link to="/careers" className="hover:text-blue-600 transition-colors">Karir</Link></li>
+              <li><Link to="/blog" className="hover:text-blue-600 transition-colors">Blog & Berita</Link></li>
             </ul>
           </div>
           <div>
             <h4 className="text-blue-950 font-bold mb-4">Layanan Pelanggan</h4>
             <ul className="space-y-2 text-gray-500 text-sm">
-              <li><Link to="/tracking" className="hover:text-blue-600 transition-colors">Lacak Pengiriman</Link></li>
-              <li><Link to="/rates" className="hover:text-blue-600 transition-colors">Cek Tarif Pengiriman</Link></li>
-              <li><Link to="/help" className="hover:text-blue-600 transition-colors">Pusat Bantuan (FAQ)</Link></li>
+              <li><Link to="/help" className="hover:text-blue-600 transition-colors">Pusat Bantuan</Link></li>
+              <li><Link to="/track" className="hover:text-blue-600 transition-colors">Lacak Paket</Link></li>
+              <li><Link to="/#rates" className="hover:text-blue-600 transition-colors">Cek Tarif</Link></li>
               <li><Link to="/terms" className="hover:text-blue-600 transition-colors">Syarat & Ketentuan</Link></li>
+              <li><Link to="/privacy" className="hover:text-blue-600 transition-colors">Kebijakan Privasi</Link></li>
             </ul>
           </div>
 
