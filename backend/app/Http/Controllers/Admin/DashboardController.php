@@ -4,27 +4,53 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Shipment;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $totalShipments = \App\Models\Shipment::count();
-        $inTransit = \App\Models\Shipment::where('status', 'In Transit')->count();
-        $delivered = \App\Models\Shipment::where('status', 'Delivered')->count();
-        $pickedUp = \App\Models\Shipment::where('status', 'Picked Up')->count();
-        
-        // Active could mean anything not delivered
-        $activeShipments = $totalShipments - $delivered;
+        $today = Carbon::today();
+        $startOfMonth = Carbon::now()->startOfMonth();
+
+        // Shipments Status Stats
+        $total = Shipment::count();
+        $active = Shipment::whereIn('status', ['Pending', 'Manifested'])->count();
+        $inTransit = Shipment::where('status', 'In_Transit')->count();
+        $delivered = Shipment::where('status', 'Delivered')->count();
+
+        // Financial Stats
+        $todayRevenue = Shipment::whereDate('created_at', $today)->sum('total_price');
+        $monthRevenue = Shipment::whereMonth('created_at', $startOfMonth->month)
+                                ->whereYear('created_at', $startOfMonth->year)
+                                ->sum('total_price');
+
+        // Recent Shipments (5 latest)
+        $recentShipments = Shipment::latest()->take(5)->get();
+
+        // 7 Days Chart Data (Shipments per day)
+        $chartData = [];
+        for ($i = 6; $i >= 0; $i--) {
+            $date = Carbon::today()->subDays($i);
+            $count = Shipment::whereDate('created_at', $date)->count();
+            $chartData[] = [
+                'name' => $date->format('d M'),
+                'pengiriman' => $count
+            ];
+        }
 
         return response()->json([
             'success' => true,
             'data' => [
-                'total' => $totalShipments,
-                'active' => $activeShipments,
-                'delivered' => $delivered,
-                'picked_up' => $pickedUp,
+                'total' => $total,
+                'active' => $active,
                 'in_transit' => $inTransit,
+                'delivered' => $delivered,
+                'today_revenue' => $todayRevenue,
+                'month_revenue' => $monthRevenue,
+                'recent_shipments' => $recentShipments,
+                'chart_data' => $chartData
             ]
         ]);
     }
