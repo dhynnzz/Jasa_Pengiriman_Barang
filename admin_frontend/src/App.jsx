@@ -10,6 +10,7 @@ import PrintWaybill from './pages/PrintWaybill';
 import Reports from './pages/Reports';
 import Drivers from './pages/Drivers';
 import Branches from './pages/Branches';
+import Partnerships from './pages/Partnerships';
 import Users from './pages/Users';
 import Settings from './pages/Settings';
 
@@ -22,92 +23,28 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
-function App() {
+export default function App() {
   return (
     <Router>
-      <Toaster position="top-center" />
+      <Toaster position="top-right" />
       <Routes>
         <Route path="/login" element={<Login />} />
         
         {/* Protected Routes */}
-        <Route 
-          path="/" 
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          } 
-        />
-        <Route 
-          path="/shipments" 
-          element={
-            <ProtectedRoute>
-              <Shipments />
-            </ProtectedRoute>
-          } 
-        />
-        <Route 
-          path="/rates" 
-          element={
-            <ProtectedRoute>
-              <Rates />
-            </ProtectedRoute>
-          } 
-        />
-        <Route 
-          path="/reports" 
-          element={
-            <ProtectedRoute>
-              <Reports />
-            </ProtectedRoute>
-          } 
-        />
-        <Route 
-          path="/drivers" 
-          element={
-            <ProtectedRoute>
-              <Drivers />
-            </ProtectedRoute>
-          } 
-        />
-        <Route 
-          path="/branches" 
-          element={
-            <ProtectedRoute>
-              <Branches />
-            </ProtectedRoute>
-          } 
-        />
-        <Route 
-          path="/users" 
-          element={
-            <ProtectedRoute>
-              <Users />
-            </ProtectedRoute>
-          } 
-        />
-        <Route 
-          path="/settings" 
-          element={
-            <ProtectedRoute>
-              <Settings />
-            </ProtectedRoute>
-          } 
-        />
-        <Route 
-          path="/print/:id" 
-          element={
-            <ProtectedRoute>
-              <PrintWaybill />
-            </ProtectedRoute>
-          } 
-        />
+        <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+        <Route path="/shipments" element={<ProtectedRoute><Shipments /></ProtectedRoute>} />
+        <Route path="/rates" element={<ProtectedRoute><Rates /></ProtectedRoute>} />
+        <Route path="/reports" element={<ProtectedRoute><Reports /></ProtectedRoute>} />
+        <Route path="/drivers" element={<ProtectedRoute><Drivers /></ProtectedRoute>} />
+        <Route path="/branches" element={<ProtectedRoute><Branches /></ProtectedRoute>} />
+        <Route path="/partnerships" element={<ProtectedRoute><Partnerships /></ProtectedRoute>} />
+        <Route path="/users" element={<ProtectedRoute><Users /></ProtectedRoute>} />
+        <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+        <Route path="/print/waybill/:trackingNumber" element={<ProtectedRoute><PrintWaybill /></ProtectedRoute>} />
         
-        {/* Fallback route */}
+        {/* Catch all redirect to dashboard */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );
 }
-
-export default App;
