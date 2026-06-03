@@ -18,7 +18,7 @@ export default function Drivers() {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
-    vehicle_type: 'Motor',
+    vehicle_type: 'Mobil Pick-up',
     plate_number: '',
     status: 'Aktif'
   });
@@ -47,7 +47,7 @@ export default function Drivers() {
     setFormData({
       name: '',
       phone: '',
-      vehicle_type: 'Motor',
+      vehicle_type: 'Mobil Pick-up',
       plate_number: '',
       status: 'Aktif'
     });
@@ -302,10 +302,10 @@ export default function Drivers() {
                       <div>
                         <label className="block text-sm font-semibold text-gray-700 mb-1">Jenis Kendaraan</label>
                         <select value={formData.vehicle_type} onChange={e => setFormData({...formData, vehicle_type: e.target.value})} className="block w-full border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-2 px-3 border bg-white">
-                          <option value="Motor">Motor</option>
                           <option value="Mobil Pick-up">Mobil Pick-up</option>
-                          <option value="Truk Engkel">Truk Engkel</option>
                           <option value="Mobil Box">Mobil Box</option>
+                          <option value="Truk Engkel">Truk Engkel</option>
+                          <option value="Truk Tronton">Truk Tronton</option>
                         </select>
                       </div>
                       <div>
