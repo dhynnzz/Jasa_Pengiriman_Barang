@@ -63,6 +63,25 @@ class ShipmentController extends Controller
         ]);
     }
 
+    public function track(string $resi)
+    {
+        $shipment = Shipment::with(['histories' => function ($query) {
+            $query->orderBy('occurred_at', 'desc');
+        }])->where('tracking_number', $resi)->first();
+
+        if (!$shipment) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Resi tidak ditemukan.'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $shipment
+        ]);
+    }
+
     public function update(Request $request, string $id)
     {
         $shipment = Shipment::findOrFail($id);
