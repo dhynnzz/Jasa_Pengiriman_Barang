@@ -1,8 +1,10 @@
 import Layout from '../components/Layout';
+import SEO from '../components/SEO';
 
 export default function Terms() {
   return (
     <Layout>
+      <SEO title="Ketentuan Layanan" description="Syarat dan ketentuan layanan pengiriman logistik CV Nabila Trans." />
       {/* Header Section */}
       <div className="bg-blue-950 pt-32 pb-20 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">

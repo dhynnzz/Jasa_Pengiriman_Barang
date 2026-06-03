@@ -1,10 +1,12 @@
 import Layout from '../components/Layout';
+import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 export default function About() {
   return (
     <Layout>
+      <SEO title="Tentang Kami" description="Sejarah dan visi misi Nabila Trans dalam menyediakan layanan logistik terpercaya di Jawa dan Bali." />
       <div className="bg-gray-50 pb-24">
         {/* Hero Section */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 overflow-hidden">
@@ -20,7 +22,7 @@ export default function About() {
                 Didorong oleh Keandalan, Ditentukan oleh Kepercayaan.
               </h1>
               <p className="text-gray-600 text-lg leading-relaxed mb-6">
-                CV Nabila Trans didirikan pada tahun 2012 di Semarang dengan armada hanya dua unit truk. Seiring berjalannya waktu, dedikasi kami terhadap kualitas layanan menjadikan kami salah satu mitra logistik terkemuka.
+                CV Nabila Trans didirikan pada tahun 2017 di Pasuruan dengan armada hanya dua unit truk. Seiring berjalannya waktu, dedikasi kami terhadap kualitas layanan menjadikan kami salah satu mitra logistik terkemuka.
               </p>
               <p className="text-gray-600 leading-relaxed mb-6">
                 Inovasi teknologi, standar keamanan tingkat tinggi, dan dedikasi tim lapangan kami memastikan setiap barang sampai dengan aman.
@@ -40,14 +42,14 @@ export default function About() {
                 transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
                 className="absolute inset-0 bg-blue-100 rounded-2xl transform translate-x-4 translate-y-4"
               ></motion.div>
-              <img src="http://localhost:8000/images/warehouse.png" alt="Tim CV Nabila Trans" className="rounded-2xl shadow-xl w-full h-[400px] object-cover relative z-10 transition-transform duration-500 group-hover:scale-[1.02]" />
+              <img src="/images/warehouse.png" alt="Tim CV Nabila Trans" className="rounded-2xl shadow-xl w-full h-[400px] object-cover relative z-10 transition-transform duration-500 group-hover:scale-[1.02]" />
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.8 }}
                 className="absolute bottom-6 left-6 z-20 bg-blue-950/90 backdrop-blur-md text-white p-4 rounded-lg shadow-lg"
               >
-                <p className="font-bold text-lg">Sejak 2012</p>
+                <p className="font-bold text-lg">Sejak 2017</p>
                 <p className="text-xs text-blue-200">Melayani sepenuh hati</p>
               </motion.div>
             </motion.div>
@@ -76,24 +78,24 @@ export default function About() {
             >
               <div className="absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-orange-200"></div>
 
-              {/* 2012 */}
+              {/* 2017 */}
               <motion.div variants={{ hidden: { opacity: 0, y: 50 }, visible: { opacity: 1, y: 0 } }} className="flex justify-between items-center w-full mb-12 relative z-10 group cursor-pointer">
                 <div className="w-5/12 text-right pr-8 transition-transform group-hover:-translate-x-2">
                   <h4 className="font-bold text-blue-950 text-xl mb-2">Permulaan</h4>
-                  <p className="text-sm text-gray-500">Mulai beroperasi di Semarang dengan fokus pengiriman barang dalam kota dan provinsi.</p>
+                  <p className="text-sm text-gray-500">Mulai beroperasi di Pasuruan dengan fokus pengiriman barang dalam kota dan provinsi.</p>
                 </div>
                 <div className="w-2/12 flex justify-center">
                   <div className="w-4 h-4 bg-orange-500 rounded-full border-4 border-white shadow group-hover:scale-150 transition-transform"></div>
                 </div>
                 <div className="w-5/12 pl-8">
-                  <span className="text-4xl font-extrabold text-orange-200 group-hover:text-orange-500 transition-colors">2012</span>
+                  <span className="text-4xl font-extrabold text-orange-200 group-hover:text-orange-500 transition-colors">2017</span>
                 </div>
               </motion.div>
 
-              {/* 2015 */}
+              {/* 2020 */}
               <motion.div variants={{ hidden: { opacity: 0, y: 50 }, visible: { opacity: 1, y: 0 } }} className="flex justify-between items-center w-full mb-12 relative z-10 group cursor-pointer">
                 <div className="w-5/12 text-right pr-8">
-                  <span className="text-4xl font-extrabold text-orange-200 group-hover:text-orange-500 transition-colors">2015</span>
+                  <span className="text-4xl font-extrabold text-orange-200 group-hover:text-orange-500 transition-colors">2020</span>
                 </div>
                 <div className="w-2/12 flex justify-center">
                   <div className="w-4 h-4 bg-orange-500 rounded-full border-4 border-white shadow group-hover:scale-150 transition-transform"></div>
@@ -104,7 +106,7 @@ export default function About() {
                 </div>
               </motion.div>
 
-              {/* 2018 */}
+              {/* 2023 */}
               <motion.div variants={{ hidden: { opacity: 0, y: 50 }, visible: { opacity: 1, y: 0 } }} className="flex justify-between items-center w-full mb-12 relative z-10 group cursor-pointer">
                 <div className="w-5/12 text-right pr-8 transition-transform group-hover:-translate-x-2">
                   <h4 className="font-bold text-blue-950 text-xl mb-2">Integrasi Teknologi</h4>
@@ -114,21 +116,21 @@ export default function About() {
                   <div className="w-4 h-4 bg-orange-500 rounded-full border-4 border-white shadow group-hover:scale-150 transition-transform"></div>
                 </div>
                 <div className="w-5/12 pl-8">
-                  <span className="text-4xl font-extrabold text-orange-200 group-hover:text-orange-500 transition-colors">2018</span>
+                  <span className="text-4xl font-extrabold text-orange-200 group-hover:text-orange-500 transition-colors">2023</span>
                 </div>
               </motion.div>
 
-              {/* 2023 */}
+              {/* 2025 */}
               <motion.div variants={{ hidden: { opacity: 0, y: 50 }, visible: { opacity: 1, y: 0 } }} className="flex justify-between items-center w-full relative z-10 group cursor-pointer">
                 <div className="w-5/12 text-right pr-8">
-                  <span className="text-4xl font-extrabold text-orange-200 group-hover:text-orange-500 transition-colors">2023</span>
+                  <span className="text-4xl font-extrabold text-orange-200 group-hover:text-orange-500 transition-colors">2025</span>
                 </div>
                 <div className="w-2/12 flex justify-center">
                   <div className="w-4 h-4 bg-orange-500 rounded-full border-4 border-white shadow group-hover:scale-150 transition-transform"></div>
                 </div>
                 <div className="w-5/12 pl-8 transition-transform group-hover:translate-x-2">
                   <h4 className="font-bold text-blue-950 text-xl mb-2">Jaringan Nasional</h4>
-                  <p className="text-sm text-gray-500">Telah memiliki cabang di 34 provinsi dan menjangkau lebih dari 500 kota di Indonesia.</p>
+                  <p className="text-sm text-gray-500">Melayani rute pengiriman strategis dengan jangkauan lebih dari 50 kota di Jawa dan Bali.</p>
                 </div>
               </motion.div>
             </motion.div>
@@ -144,7 +146,7 @@ export default function About() {
               </div>
               <h3 className="text-3xl font-extrabold mb-4 relative z-10">Visi Kami</h3>
               <p className="text-blue-100 text-lg leading-relaxed relative z-10">
-                Menjadi penyedia logistik terdepan di Indonesia yang menggerakkan pergerakan ekonomi melalui jaringan andal, efisien, dan berkelanjutan.
+                Menjadi penyedia logistik terdepan di Jawa dan Bali yang menggerakkan pergerakan ekonomi melalui jaringan andal, efisien, dan berkelanjutan.
               </p>
             </div>
 
@@ -246,8 +248,9 @@ export default function About() {
                 </div>
               </div>
             </div>
-            <div className="w-full lg:w-1/2">
-              <img src="http://localhost:8000/images/truck.png" alt="Armada" className="rounded-2xl shadow-xl w-full h-auto" />
+            <div className="w-full lg:w-1/2 relative group">
+              <img src="/images/gambar3.jfif" alt="Armada Nabila Trans" className="rounded-2xl shadow-xl w-full h-auto" />
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </div>
           </div>
         </div>
@@ -257,7 +260,7 @@ export default function About() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center divide-x divide-blue-800">
               <div className="px-4">
-                <p className="text-4xl font-bold mb-2">12+</p>
+                <p className="text-4xl font-bold mb-2">9+</p>
                 <p className="text-blue-300 text-sm uppercase tracking-wider">Tahun Pengalaman</p>
               </div>
               <div className="px-4">
@@ -265,11 +268,11 @@ export default function About() {
                 <p className="text-blue-300 text-sm uppercase tracking-wider">Kiriman Sukses</p>
               </div>
               <div className="px-4">
-                <p className="text-4xl font-bold mb-2">38</p>
-                <p className="text-blue-300 text-sm uppercase tracking-wider">Cabang Regional</p>
+                <p className="text-4xl font-bold mb-2">1</p>
+                <p className="text-blue-300 text-sm uppercase tracking-wider">Kantor Pusat</p>
               </div>
               <div className="px-4 border-r-0 lg:border-r border-blue-800">
-                <p className="text-4xl font-bold mb-2">500+</p>
+                <p className="text-4xl font-bold mb-2">50+</p>
                 <p className="text-blue-300 text-sm uppercase tracking-wider">Armada Operasional</p>
               </div>
             </div>
@@ -284,14 +287,14 @@ export default function About() {
             </div>
             <h2 className="text-3xl font-extrabold mb-4 relative z-10">Bergabunglah dengan jaringan logistik kami yang terus berkembang</h2>
             <p className="text-orange-100 mb-8 max-w-xl mx-auto relative z-10">
-              Kami mencari mitra-mitra inovatif dan handal yang punya visi sejalan untuk menggerakkan logistik Indonesia ke arah yang lebih efisien dan modern.
+              Kami mencari mitra-mitra inovatif dan handal yang punya visi sejalan untuk menggerakkan logistik lokal ke arah yang lebih efisien dan modern.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4 relative z-10">
-              <Link to="/contact" className="bg-blue-950 text-white font-bold px-8 py-3 rounded-md hover:bg-blue-900 transition-colors">
+              <Link to="/partnership" className="bg-blue-950 text-white font-bold px-8 py-3 rounded-md hover:bg-blue-900 transition-colors">
                 Buka Kerja Sama
               </Link>
-              <Link to="/careers" className="bg-white text-orange-500 font-bold px-8 py-3 rounded-md hover:bg-gray-50 transition-colors">
-                Pelajari Lowongan
+              <Link to="/help" className="bg-white text-orange-500 font-bold px-8 py-3 rounded-md hover:bg-gray-50 transition-colors">
+                Hubungi Dukungan
               </Link>
             </div>
           </div>

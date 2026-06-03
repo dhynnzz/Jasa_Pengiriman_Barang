@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Layout from '../components/Layout';
+import SEO from '../components/SEO';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 
@@ -82,6 +83,7 @@ Segera hubungi kembali calon mitra ini.`;
 
   return (
     <Layout>
+      <SEO title="Kemitraan" description="Bergabunglah menjadi mitra bisnis logistik bersama Nabila Trans. Ajukan penawaran dengan mudah." />
       <div className="bg-slate-50 min-h-screen py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 

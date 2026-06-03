@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import Layout from '../components/Layout';
+import SEO from '../components/SEO';
 import { motion } from 'framer-motion';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination } from 'swiper/modules';
@@ -16,13 +17,13 @@ export default function Home() {
     },
     {
       text: "\"Pengiriman super cepat dan CS sangat responsif. Sangat merekomendasikan layanan Nabila Trans untuk keperluan bisnis berskala besar maupun kecil.\"",
-      name: "Budi Santoso",
+      name: "Budi Prayoga",
       role: "Owner Toko Laris",
       img: "https://i.pravatar.cc/150?img=12"
     },
     {
       text: "\"Sistem pelacakan live-nya sangat membantu kami memantau pergerakan barang. Harga terjangkau dengan kualitas pelayanan bintang 5.\"",
-      name: "Siti Rahma",
+      name: "Citra Lestari",
       role: "Manager Operasional",
       img: "https://i.pravatar.cc/150?img=9"
     }
@@ -30,11 +31,12 @@ export default function Home() {
 
   return (
     <Layout>
+      <SEO title="Beranda" />
       {/* Hero Section */}
       <div className="bg-gray-50 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-24">
           <div className="flex flex-col lg:flex-row items-center gap-12">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
@@ -45,7 +47,7 @@ export default function Home() {
                 Next-Gen Logistics
               </span>
               <h1 className="text-4xl lg:text-5xl font-extrabold text-blue-950 leading-tight mb-6">
-                Layanan Pengiriman Cepat, Aman, dan Terpercaya di Seluruh Indonesia
+                Layanan Pengiriman Cepat, Aman, dan Terpercaya di Seluruh Jawa dan Bali
               </h1>
               <p className="text-gray-600 text-lg mb-8 leading-relaxed max-w-lg">
                 Permudah logistik Anda dengan solusi pengiriman berbasis teknologi kami. Kami menghadirkan konsistensi layanan yang setara dengan tenaga profesional terbaik.
@@ -59,16 +61,13 @@ export default function Home() {
                 </Link>
                 <div className="flex items-center gap-3 text-white/80 text-sm">
                   <div className="flex -space-x-2">
-                    <img className="w-8 h-8 rounded-full border-2 border-blue-900" src="https://i.pravatar.cc/100?img=1" alt="User"/>
-                    <img className="w-8 h-8 rounded-full border-2 border-blue-900" src="https://i.pravatar.cc/100?img=2" alt="User"/>
-                    <img className="w-8 h-8 rounded-full border-2 border-blue-900" src="https://i.pravatar.cc/100?img=3" alt="User"/>
                   </div>
                   <span>Dipercaya 10k+ Pelanggan</span>
                 </div>
               </div>
-              </motion.div>
-            
-            <motion.div 
+            </motion.div>
+
+            <motion.div
               initial={{ opacity: 0, x: 50, scale: 0.9 }}
               animate={{ opacity: 1, x: 0, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
@@ -77,22 +76,22 @@ export default function Home() {
             >
               <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-purple-600 rounded-3xl blur-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-700"></div>
               <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-6 shadow-2xl relative transform transition-transform duration-700 group-hover:-translate-y-2 group-hover:rotate-1">
-                <img src="http://localhost:8000/images/truck.png" alt="Logistic Truck" className="w-full h-auto object-cover rounded-2xl shadow-inner mix-blend-overlay opacity-90" />
-                
+                <img src="/images/truck-nabila.jpeg" alt="Truk Nabila Trans" className="w-full h-auto object-cover rounded-2xl shadow-inner mix-blend-overlay opacity-90" />
+
                 {/* Floating UI Elements */}
                 <div className="absolute -left-6 top-1/4 bg-white rounded-xl p-4 shadow-xl border border-gray-100 flex items-center gap-3 animate-bounce" style={{ animationDuration: '3s' }}>
                   <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg>
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
                   </div>
                   <div>
                     <p className="text-xs text-gray-500 font-bold">Status</p>
                     <p className="text-sm font-bold text-gray-900">Delivered</p>
                   </div>
                 </div>
-                
+
                 <div className="absolute -right-6 bottom-1/4 bg-white rounded-xl p-4 shadow-xl border border-gray-100 flex items-center gap-3 animate-bounce" style={{ animationDuration: '4s', animationDelay: '1s' }}>
                   <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center text-orange-600">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                   </div>
                   <div>
                     <p className="text-xs text-gray-500 font-bold">Estimasi</p>
@@ -106,7 +105,7 @@ export default function Home() {
       </div>
 
       {/* Stats - Overlapping the Hero Section */}
-      <motion.div 
+      <motion.div
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
@@ -123,13 +122,13 @@ export default function Home() {
             { value: "99%", label: "Keberhasilan Pengiriman", color: "text-blue-950" },
             { value: "24/7", label: "Support Team", color: "text-orange-500" }
           ].map((stat, i) => (
-            <motion.div 
+            <motion.div
               key={i}
               variants={{
                 hidden: { opacity: 0, y: 30 },
                 visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } }
               }}
-              whileHover={{ y: -10, scale: 1.02 }} 
+              whileHover={{ y: -10, scale: 1.02 }}
               className="bg-white/90 backdrop-blur-md border border-white/50 rounded-2xl p-6 flex flex-col justify-center shadow-xl transition-transform"
             >
               <h3 className={`text-3xl font-extrabold ${stat.color} mb-2`}>{stat.value}</h3>
@@ -141,7 +140,7 @@ export default function Home() {
 
       {/* Features */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 overflow-hidden">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -156,7 +155,7 @@ export default function Home() {
           </p>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
@@ -220,7 +219,7 @@ export default function Home() {
       {/* Services Overview */}
       <div className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -241,7 +240,7 @@ export default function Home() {
                 Pelajari <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" /></svg>
               </Link>
             </motion.div>
-            
+
             <motion.div whileHover={{ y: -5 }} className="bg-gray-50 p-8 rounded-2xl border border-gray-100 hover:shadow-xl transition-shadow">
               <div className="w-12 h-12 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center mb-6">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
@@ -252,7 +251,7 @@ export default function Home() {
                 Pelajari <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" /></svg>
               </Link>
             </motion.div>
-            
+
             <motion.div whileHover={{ y: -5 }} className="bg-gray-50 p-8 rounded-2xl border border-gray-100 hover:shadow-xl transition-shadow">
               <div className="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center mb-6">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
@@ -271,7 +270,7 @@ export default function Home() {
       <div className="bg-gray-900 py-24 text-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row gap-16">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -330,7 +329,7 @@ export default function Home() {
               </ul>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}

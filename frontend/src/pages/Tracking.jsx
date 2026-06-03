@@ -1,4 +1,5 @@
 import Layout from '../components/Layout';
+import SEO from '../components/SEO';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import LiveTrackingMap from '../components/LiveTrackingMap';
@@ -24,7 +25,8 @@ export default function Tracking() {
     toast.loading('Mencari resi...', { id: 'search-toast' });
 
     try {
-      const response = await axios.get(`http://localhost:8000/api/tracking/${resi}`);
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+      const response = await axios.get(`${API_URL}/tracking/${resi}`);
       if (response.data.success) {
         setShipment(response.data.data);
         toast.success('Resi ditemukan!', { id: 'search-toast' });
@@ -49,9 +51,10 @@ export default function Tracking() {
 
   return (
     <Layout>
+      <SEO title="Lacak Paket" description="Pantau status dan pergerakan paket Anda secara live melalui fitur tracking Nabila Trans." />
       <div className="bg-gray-50 min-h-screen pb-20">
         {/* Header & Search */}
-        <div className="bg-blue-950 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="bg-blue-950 pt-32 pb-12 px-4 sm:px-6 lg:px-8">
           <motion.div 
             initial={{ opacity: 0, y: -30 }}
             animate={{ opacity: 1, y: 0 }}

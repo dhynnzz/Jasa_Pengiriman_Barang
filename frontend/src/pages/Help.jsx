@@ -1,4 +1,5 @@
 import Layout from '../components/Layout';
+import SEO from '../components/SEO';
 import { useState } from 'react';
 
 export default function Help() {
@@ -10,17 +11,18 @@ export default function Help() {
 
   return (
     <Layout>
+      <SEO title="Pusat Bantuan" description="Pusat bantuan pelanggan Nabila Trans. Temukan solusi dari pertanyaan umum atau hubungi CS kami." />
       {/* Header Section */}
       <div className="bg-blue-950 pt-32 pb-20 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <path d="M0,100 C30,50 70,50 100,0 L100,100 Z" fill="currentColor"/>
+            <path d="M0,100 C30,50 70,50 100,0 L100,100 Z" fill="currentColor" />
           </svg>
         </div>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
           <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-6">Pusat Bantuan</h1>
           <p className="text-xl text-blue-200 mb-8">Temukan jawaban atas pertanyaan Anda atau hubungi tim dukungan kami.</p>
-          
+
           {/* Search Bar */}
           <div className="max-w-2xl mx-auto bg-white rounded-lg p-2 flex items-center shadow-lg">
             <svg className="w-6 h-6 text-gray-400 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -37,13 +39,13 @@ export default function Help() {
       {/* FAQ & Contact Section */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          
+
           {/* FAQ Section */}
           <div className="lg:col-span-2">
             <h2 className="text-2xl font-bold text-blue-950 mb-8">Pertanyaan yang Sering Diajukan (FAQ)</h2>
-            
+
             <div className="space-y-4">
-              
+
               <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden cursor-pointer" onClick={() => toggleFaq(0)}>
                 <div className="flex items-center justify-between gap-1.5 p-6 text-gray-900">
                   <h2 className="font-bold text-lg text-blue-950">Bagaimana cara melacak paket saya?</h2>
@@ -97,7 +99,7 @@ export default function Help() {
                   </div>
                 )}
               </div>
-              
+
               <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden cursor-pointer" onClick={() => toggleFaq(3)}>
                 <div className="flex items-center justify-between gap-1.5 p-6 text-gray-900">
                   <h2 className="font-bold text-lg text-blue-950">Apakah saya bisa mengubah alamat tujuan saat paket sudah dikirim?</h2>
@@ -121,8 +123,8 @@ export default function Help() {
           {/* Contact Options */}
           <div className="space-y-6">
             <h2 className="text-2xl font-bold text-blue-950 mb-8">Hubungi Kami Langsung</h2>
-            
-            <a href="https://wa.me/6282340074645" target="_blank" rel="noreferrer" className="block bg-white rounded-xl shadow-sm border border-green-100 p-6 hover:shadow-md transition-shadow group">
+
+            <a href="https://wa.me/6282142923433" target="_blank" rel="noreferrer" className="block bg-white rounded-xl shadow-sm border border-green-100 p-6 hover:shadow-md transition-shadow group">
               <div className="flex items-center gap-4 mb-3">
                 <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                   <svg className="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
@@ -135,30 +137,17 @@ export default function Help() {
               <p className="text-gray-500 text-sm">Tim kami siap membantu Anda melalui chat WhatsApp kapan saja.</p>
             </a>
 
-            <a href="tel:+6282340074645" className="block bg-white rounded-xl shadow-sm border border-blue-100 p-6 hover:shadow-md transition-shadow group">
+            <a href="tel:+6282142923433" className="block bg-white rounded-xl shadow-sm border border-blue-100 p-6 hover:shadow-md transition-shadow group">
               <div className="flex items-center gap-4 mb-3">
                 <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                   <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
                 </div>
                 <div>
                   <h3 className="font-bold text-gray-900 text-lg">Panggilan Suara</h3>
-                  <p className="text-blue-600 text-sm font-semibold">+62 823-4007-4645</p>
+                  <p className="text-blue-600 text-sm font-semibold">+62 821-4292-3433</p>
                 </div>
               </div>
               <p className="text-gray-500 text-sm">Bicarakan masalah Anda langsung dengan agen dukungan kami.</p>
-            </a>
-            
-            <a href="mailto:support@nabilatrans.com" className="block bg-white rounded-xl shadow-sm border border-orange-100 p-6 hover:shadow-md transition-shadow group">
-              <div className="flex items-center gap-4 mb-3">
-                <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <svg className="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                </div>
-                <div>
-                  <h3 className="font-bold text-gray-900 text-lg">Email Dukungan</h3>
-                  <p className="text-orange-500 text-sm font-semibold">support@nabilatrans.com</p>
-                </div>
-              </div>
-              <p className="text-gray-500 text-sm">Kirim keluhan atau klaim asuransi beserta file lampiran Anda.</p>
             </a>
           </div>
         </div>

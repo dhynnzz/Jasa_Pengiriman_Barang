@@ -1,5 +1,5 @@
-import { Link, NavLink } from 'react-router-dom';
-import { Menu } from 'lucide-react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Menu, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
 
@@ -7,6 +7,12 @@ export default function Navbar() {
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location.pathname]);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious();
@@ -53,7 +59,7 @@ export default function Navbar() {
           {/* CTA Button */}
           <div className="hidden md:flex items-center">
             <a 
-              href="https://wa.me/6282340074645?text=Halo%20Nabila%20Trans,%20saya%20ingin%20menggunakan%20layanan%20pengiriman%20barang." 
+              href="https://wa.me/+6282142923433?text=Halo%20Nabila%20Trans,%20saya%20ingin%20menggunakan%20layanan%20pengiriman%20barang." 
               target="_blank" 
               rel="noopener noreferrer"
               className="bg-orange-500 text-white px-6 py-2 rounded-full font-medium text-sm hover:bg-orange-600 transition-colors shadow-md flex items-center gap-2"
@@ -65,12 +71,41 @@ export default function Navbar() {
 
           {/* Mobile menu button */}
           <div className="flex md:hidden items-center">
-            <button type="button" className="text-gray-500 hover:text-gray-900 focus:outline-none p-2">
-              <Menu className="h-6 w-6" />
+            <button 
+              type="button" 
+              className="text-gray-500 hover:text-gray-900 focus:outline-none p-2"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
           </div>
         </div>
       </div>
+
+      {/* Mobile Menu Dropdown */}
+      <motion.div 
+        initial={false}
+        animate={{ height: isMobileMenuOpen ? 'auto' : 0, opacity: isMobileMenuOpen ? 1 : 0 }}
+        className="md:hidden overflow-hidden bg-white border-t border-gray-100 shadow-lg"
+      >
+        <div className="px-4 pt-2 pb-6 space-y-1">
+          <NavLink to="/" className={({ isActive }) => `block px-3 py-2 rounded-md text-base font-medium ${isActive ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-gray-50 hover:text-blue-600'}`}>Beranda</NavLink>
+          <NavLink to="/services" className={({ isActive }) => `block px-3 py-2 rounded-md text-base font-medium ${isActive ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-gray-50 hover:text-blue-600'}`}>Layanan</NavLink>
+          <NavLink to="/tracking" className={({ isActive }) => `block px-3 py-2 rounded-md text-base font-medium ${isActive ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-gray-50 hover:text-blue-600'}`}>Lacak</NavLink>
+          <NavLink to="/rates" className={({ isActive }) => `block px-3 py-2 rounded-md text-base font-medium ${isActive ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-gray-50 hover:text-blue-600'}`}>Biaya Pengiriman</NavLink>
+          <NavLink to="/partnership" className={({ isActive }) => `block px-3 py-2 rounded-md text-base font-medium ${isActive ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-gray-50 hover:text-blue-600'}`}>Kemitraan</NavLink>
+          <NavLink to="/about" className={({ isActive }) => `block px-3 py-2 rounded-md text-base font-medium ${isActive ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-gray-50 hover:text-blue-600'}`}>Tentang</NavLink>
+          
+          <a 
+            href="https://wa.me/6282340074645?text=Halo%20Nabila%20Trans,%20saya%20ingin%20menggunakan%20layanan%20pengiriman%20barang." 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="mt-4 block w-full text-center bg-orange-500 text-white px-6 py-3 rounded-md font-medium text-base hover:bg-orange-600 transition-colors shadow-md"
+          >
+            Kirim Sekarang
+          </a>
+        </div>
+      </motion.div>
     </motion.header>
   );
 }

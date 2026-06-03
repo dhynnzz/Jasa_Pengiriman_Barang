@@ -1,13 +1,15 @@
 import Layout from '../components/Layout';
+import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 
 export default function Services() {
   return (
     <Layout>
+      <SEO title="Layanan Kami" description="Pilihan layanan pengiriman logistik dari Nabila Trans yang disesuaikan dengan kebutuhan Anda." />
       {/* Header with Background */}
       <div className="relative bg-blue-950 py-24 lg:py-32 overflow-hidden">
         <div className="absolute inset-0 opacity-20">
-          <img src="http://localhost:8000/images/warehouse.png" alt="Warehouse Background" className="w-full h-full object-cover" />
+          <img src="/images/warehouse.png" alt="Warehouse Background" className="w-full h-full object-cover" />
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center text-white">
           <span className="inline-block bg-orange-500/20 text-orange-400 font-bold text-xs uppercase tracking-wider px-3 py-1 rounded-full mb-4">Layanan Pengiriman Logistik Cerdas</span>
@@ -141,12 +143,12 @@ export default function Services() {
         <div className="flex flex-col lg:flex-row gap-16 items-center">
           <div className="w-full lg:w-1/2">
             <div className="bg-blue-50 rounded-2xl p-8 relative">
-              <img src="http://localhost:8000/images/truck.png" alt="Truck Delivery" className="w-full h-auto rounded-xl" />
-              <div className="absolute -bottom-6 -right-6 bg-[#0f467e] text-white p-8 rounded-2xl shadow-2xl max-w-sm">
-                <p className="text-lg italic font-medium mb-5 leading-relaxed tracking-wide">"Presisi di setiap proses, transparansi di setiap kilometer."</p>
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-1.5 bg-orange-500 rounded-full"></div>
-                  <span className="text-orange-500 font-bold tracking-widest text-sm uppercase">NABILA STANDARD</span>
+              <img src="/images/gambar2.jfif" alt="Truck Delivery" className="w-full h-auto rounded-xl" />
+              <div className="absolute -bottom-8 -right-4 md:-right-8 bg-[#0f467e] text-white p-5 rounded-2xl shadow-2xl max-w-[260px] md:max-w-[300px]">
+                <p className="text-sm italic font-medium mb-4 leading-relaxed tracking-wide">"Presisi di setiap proses, transparansi di setiap kilometer."</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-1 bg-orange-500 rounded-full"></div>
+                  <span className="text-orange-500 font-bold tracking-widest text-xs uppercase">Ceo Nabila Trans</span>
                 </div>
               </div>
             </div>
@@ -165,7 +167,7 @@ export default function Services() {
                 </div>
                 <div>
                   <h4 className="font-bold text-blue-950 mb-1">Tersedia Di Mana Saja</h4>
-                  <p className="text-sm text-gray-500 leading-relaxed">Jangkauan layanan kami meliputi semua wilayah Indonesia dengan mitra di seluruh nusantara.</p>
+                  <p className="text-sm text-gray-500 leading-relaxed">Jangkauan layanan kami meliputi seluruh wilayah Jawa dan Bali dengan armada yang andal.</p>
                 </div>
               </div>
               <div className="flex gap-4">
@@ -189,54 +191,55 @@ export default function Services() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row gap-16">
             <div className="w-full lg:w-1/2">
-              <h2 className="text-3xl font-extrabold mb-6">Cakupan Nasional</h2>
+              <h2 className="text-3xl font-extrabold mb-6">Cakupan Jawa & Bali</h2>
               <p className="text-gray-400 mb-10 leading-relaxed">
-                Kami menjangkau titik tersulit sekalipun dengan infrastruktur andalan yang tersebar di wilayah strategis dari Sabang sampai Merauke, melayani kebutuhan antar pulau.
+                Kami menjangkau titik tersulit sekalipun dengan infrastruktur andalan yang tersebar di wilayah strategis seluruh pulau Jawa dan Bali, memastikan pengiriman yang cepat dan aman.
               </p>
               <div className="grid grid-cols-2 gap-8 mb-12">
                 <div>
-                  <h4 className="font-bold text-orange-500 mb-4 text-sm uppercase tracking-wider">Jawa & Bali</h4>
+                  <h4 className="font-bold text-orange-500 mb-4 text-sm uppercase tracking-wider">Jawa Timur & Bali</h4>
+                  <ul className="space-y-2 text-sm text-gray-300">
+                    <li>&bull; Pasuruan (Pusat)</li>
+                    <li>&bull; Surabaya</li>
+                    <li>&bull; Malang</li>
+                    <li>&bull; Denpasar</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-bold text-orange-500 mb-4 text-sm uppercase tracking-wider">Jawa Tengah & DIY</h4>
+                  <ul className="space-y-2 text-sm text-gray-300">
+                    <li>&bull; Semarang</li>
+                    <li>&bull; Yogyakarta</li>
+                    <li>&bull; Surakarta</li>
+                    <li>&bull; Tegal</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-bold text-orange-500 mb-4 text-sm uppercase tracking-wider">Jawa Barat</h4>
+                  <ul className="space-y-2 text-sm text-gray-300">
+                    <li>&bull; Bandung</li>
+                    <li>&bull; Cirebon</li>
+                    <li>&bull; Bogor</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-bold text-orange-500 mb-4 text-sm uppercase tracking-wider">Jabodetabek & Banten</h4>
                   <ul className="space-y-2 text-sm text-gray-300">
                     <li>&bull; Jakarta</li>
-                    <li>&bull; Bandung, Jawa Barat</li>
-                    <li>&bull; Semarang, Jawa Tengah</li>
-                    <li>&bull; Surabaya</li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-bold text-orange-500 mb-4 text-sm uppercase tracking-wider">Sumatera</h4>
-                  <ul className="space-y-2 text-sm text-gray-300">
-                    <li>&bull; Medan</li>
-                    <li>&bull; Palembang</li>
-                    <li>&bull; Padang</li>
-                    <li>&bull; Lampung</li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-bold text-orange-500 mb-4 text-sm uppercase tracking-wider">Kalimantan</h4>
-                  <ul className="space-y-2 text-sm text-gray-300">
-                    <li>&bull; Pontianak</li>
-                    <li>&bull; Balikpapan</li>
-                    <li>&bull; Banjarmasin</li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-bold text-orange-500 mb-4 text-sm uppercase tracking-wider">Sulawesi</h4>
-                  <ul className="space-y-2 text-sm text-gray-300">
-                    <li>&bull; Makassar</li>
-                    <li>&bull; Manado</li>
+                    <li>&bull; Tangerang</li>
+                    <li>&bull; Bekasi</li>
                   </ul>
                 </div>
               </div>
 
               <div className="border-t border-gray-700 pt-8 grid grid-cols-3 gap-4">
                 <div>
-                  <p className="text-2xl font-bold">500+</p>
-                  <p className="text-xs text-gray-400">Provinsi/Kota</p>
+                  <p className="text-2xl font-bold">50+</p>
+                  <p className="text-xs text-gray-400">Kota/Kabupaten</p>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold">34</p>
-                  <p className="text-xs text-gray-400">Pulau</p>
+                  <p className="text-2xl font-bold">7</p>
+                  <p className="text-xs text-gray-400">Provinsi</p>
                 </div>
                 <div>
                   <p className="text-2xl font-bold">100%</p>
@@ -252,9 +255,9 @@ export default function Services() {
                   <svg className="w-8 h-8 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" /></svg>
                 </div>
                 <h4 className="text-xl font-bold mb-3">Jaringan Distribusi Interaktif</h4>
-                <p className="text-gray-400 text-sm mb-8 leading-relaxed">Klik di bawah untuk melihat peta cakupan layanan dan lokasi cabang kami secara lengkap.</p>
+                <p className="text-gray-400 text-sm mb-8 leading-relaxed">Klik di bawah untuk melihat peta cakupan layanan dan lokasi rute kami secara lengkap.</p>
                 <Link to="/coverage-map" className="inline-block bg-white text-blue-950 font-bold px-8 py-3 rounded-md hover:bg-gray-100 transition-colors">
-                  Buka Peta Global
+                  Lihat Peta Jangkauan
                 </Link>
               </div>
             </div>

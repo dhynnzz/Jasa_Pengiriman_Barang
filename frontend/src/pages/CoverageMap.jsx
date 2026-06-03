@@ -3,26 +3,26 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { Search, MapPin, Navigation, ShieldCheck, Activity, Users, Globe, Layers, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import SEO from '../components/SEO';
 
 import 'leaflet/dist/leaflet.css';
 import '../components/map-custom.css';
 
 // --- Dummy Data ---
 const locations = [
-    { id: 1, city: 'Gempol, Pasuruan', region: 'Jawa & Bali', type: 'pusat', lat: -7.5925, lng: 112.6953, address: 'Kawasan Industri Gempol, Pasuruan, Jawa Timur', status: 'Active 24/7', mapsUrl: 'https://maps.app.goo.gl/sbG6o7GHrpga9kHF8' },
-    { id: 2, city: 'Surabaya', region: 'Jawa & Bali', type: 'regional', lat: -7.2504, lng: 112.7688, address: 'Jl. Tunjungan No. 45, Surabaya', status: 'Active' },
-    { id: 3, city: 'Bandung', region: 'Jawa & Bali', type: 'cabang', lat: -6.9175, lng: 107.6191, address: 'Jl. Asia Afrika No. 12, Bandung', status: 'Active' },
-    { id: 4, city: 'Medan', region: 'Sumatra', type: 'regional', lat: 3.5952, lng: 98.6722, address: 'Jl. Putri Hijau No. 10, Medan', status: 'Active' },
-    { id: 5, city: 'Makassar', region: 'Sulawesi', type: 'regional', lat: -5.1477, lng: 119.4327, address: 'Jl. Boulevard Panakkukang, Makassar', status: 'Active' },
-    { id: 6, city: 'Balikpapan', region: 'Kalimantan', type: 'cabang', lat: -1.2379, lng: 116.8529, address: 'Jl. Sudirman No. 88, Balikpapan', status: 'Active' },
-    { id: 7, city: 'Jayapura', region: 'Papua', type: 'mitra', lat: -2.5337, lng: 140.7181, address: 'Jl. Raya Abepura, Jayapura', status: 'Limited Hours' },
+    { id: 1, city: 'Kantor Pusat (Gempol)', region: 'Jawa & Bali', type: 'pusat', lat: -7.5925, lng: 112.6953, address: 'Tempel, Legok, Kec. Gempol, Pasuruan, Jawa Timur 67155', status: 'Active 24/7', mapsUrl: 'https://maps.app.goo.gl/sbG6o7GHrpga9kHF8' },
+    { id: 2, city: 'Surabaya', region: 'Jawa & Bali', type: 'regional', lat: -7.2504, lng: 112.7688, address: 'Rute Pengiriman Area Surabaya Raya', status: 'Active' },
+    { id: 3, city: 'Malang', region: 'Jawa & Bali', type: 'regional', lat: -7.9797, lng: 112.6304, address: 'Rute Pengiriman Area Malang Raya', status: 'Active' },
+    { id: 4, city: 'Semarang', region: 'Jawa & Bali', type: 'regional', lat: -6.9666, lng: 110.4166, address: 'Rute Pengiriman Area Semarang Raya', status: 'Active' },
+    { id: 5, city: 'Yogyakarta', region: 'Jawa & Bali', type: 'regional', lat: -7.7956, lng: 110.3695, address: 'Rute Pengiriman Area DI Yogyakarta', status: 'Active' },
+    { id: 6, city: 'Bandung', region: 'Jawa & Bali', type: 'regional', lat: -6.9175, lng: 107.6191, address: 'Rute Pengiriman Area Bandung Raya', status: 'Active' },
+    { id: 7, city: 'Jakarta', region: 'Jawa & Bali', type: 'regional', lat: -6.2088, lng: 106.8456, address: 'Rute Pengiriman Area Jabodetabek', status: 'Active' },
+    { id: 8, city: 'Denpasar', region: 'Jawa & Bali', type: 'regional', lat: -8.6500, lng: 115.2166, address: 'Rute Pengiriman Area Bali', status: 'Active' },
 ];
 
 const legendColors = {
     pusat: { label: 'Kantor Pusat', color: 'bg-orange-500' },
-    regional: { label: 'Regional', color: 'bg-blue-500' },
-    cabang: { label: 'Cabang', color: 'bg-cyan-500' },
-    mitra: { label: 'Mitra', color: 'bg-purple-500' },
+    regional: { label: 'Rute Pengiriman', color: 'bg-blue-500' },
 };
 
 // --- Custom Icon Creator ---
@@ -45,8 +45,8 @@ const ChangeView = ({ center, zoom }) => {
 export default function CoverageMap() {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedRegion, setSelectedRegion] = useState('All');
-    const [mapCenter, setMapCenter] = useState([-2.5489, 118.0149]); // Center of Indonesia
-    const [mapZoom, setMapZoom] = useState(5);
+    const [mapCenter, setMapCenter] = useState([-7.5925, 112.6953]); // Center on Gempol
+    const [mapZoom, setMapZoom] = useState(10);
 
     const filteredLocations = locations.filter(loc => {
         const matchesSearch = loc.city.toLowerCase().includes(searchTerm.toLowerCase());
@@ -61,7 +61,7 @@ export default function CoverageMap() {
 
     return (
         <div className="flex flex-col h-screen bg-slate-950 text-slate-200 overflow-hidden font-sans relative">
-            
+            <SEO title="Jangkauan Wilayah" description="Peta jangkauan rute layanan Nabila Trans di Jawa dan Bali." />
             {/* Top Navigation Bar inside map for quick return */}
             <div className="absolute top-4 right-4 z-[1001]">
                 <Link to="/" className="flex items-center gap-2 bg-slate-900/80 backdrop-blur-md border border-slate-700/50 text-white px-4 py-2 rounded-full hover:bg-slate-800 transition-colors shadow-lg">
@@ -71,7 +71,7 @@ export default function CoverageMap() {
 
             {/* Main Area: Map & Sidebar Container */}
             <div className="flex flex-1 relative z-0">
-                
+
                 {/* Sidebar - Glassmorphism */}
                 <div className="absolute top-6 left-6 z-[1000] w-80 max-h-[calc(100vh-160px)] flex flex-col gap-4">
                     {/* Header Panel */}
@@ -80,13 +80,13 @@ export default function CoverageMap() {
                             <div className="p-2 bg-blue-500/20 rounded-lg text-blue-400">
                                 <Globe size={24} />
                             </div>
-                            <h2 className="text-xl font-bold text-white tracking-wide">Peta Distribusi</h2>
+                            <h2 className="text-xl font-bold text-white tracking-wide">Area Jangkauan Layanan</h2>
                         </div>
-                        
+
                         <div className="relative mb-5">
-                            <input 
-                                type="text" 
-                                placeholder="Cari kota / cabang..." 
+                            <input
+                                type="text"
+                                placeholder="Cari kota tujuan..."
                                 className="w-full bg-slate-800/50 border border-slate-700 rounded-lg py-2.5 pl-10 pr-4 text-sm text-white placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-colors"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -95,15 +95,14 @@ export default function CoverageMap() {
                         </div>
 
                         <div className="flex flex-wrap gap-2">
-                            {['All', 'Jawa & Bali', 'Sumatra', 'Kalimantan', 'Sulawesi', 'Papua'].map(region => (
-                                <button 
+                            {['All', 'Jawa & Bali'].map(region => (
+                                <button
                                     key={region}
                                     onClick={() => setSelectedRegion(region)}
-                                    className={`px-3 py-1.5 text-xs font-semibold rounded-full transition-all ${
-                                        selectedRegion === region 
-                                        ? 'bg-blue-600 text-white shadow-[0_0_10px_rgba(37,99,235,0.5)]' 
+                                    className={`px-3 py-1.5 text-xs font-semibold rounded-full transition-all ${selectedRegion === region
+                                        ? 'bg-blue-600 text-white shadow-[0_0_10px_rgba(37,99,235,0.5)]'
                                         : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
-                                    }`}
+                                        }`}
                                 >
                                     {region}
                                 </button>
@@ -116,25 +115,24 @@ export default function CoverageMap() {
                         <div className="p-4 border-b border-slate-700/50 flex justify-between items-center">
                             <h3 className="text-sm font-bold text-slate-300">Lokasi ({filteredLocations.length})</h3>
                             <button className="text-xs text-blue-400 hover:text-blue-300 cursor-pointer" onClick={() => {
-                                setMapCenter([-2.5489, 118.0149]);
-                                setMapZoom(5);
+                                setMapCenter([-7.5925, 112.6953]);
+                                setMapZoom(10);
                             }}>Reset Map</button>
                         </div>
                         <div className="overflow-y-auto p-2 max-h-64 custom-scrollbar">
                             {filteredLocations.map(loc => (
-                                <div 
-                                    key={loc.id} 
+                                <div
+                                    key={loc.id}
                                     className="p-4 mb-2 hover:bg-slate-800/60 rounded-lg cursor-pointer transition-colors border border-transparent hover:border-slate-700"
                                     onClick={() => handleCityClick(loc)}
                                 >
                                     <div className="flex justify-between items-start mb-2">
                                         <span className="text-base font-bold text-white leading-tight">{loc.city}</span>
-                                        <span className={`text-[10px] uppercase font-bold px-2.5 py-0.5 rounded-full bg-slate-800/80 border ${
-                                            loc.type === 'pusat' ? 'border-orange-500 text-orange-500' :
+                                        <span className={`text-[10px] uppercase font-bold px-2.5 py-0.5 rounded-full bg-slate-800/80 border ${loc.type === 'pusat' ? 'border-orange-500 text-orange-500' :
                                             loc.type === 'regional' ? 'border-blue-500 text-blue-500' :
-                                            loc.type === 'cabang' ? 'border-cyan-500 text-cyan-500' :
-                                            'border-purple-500 text-purple-500'
-                                        }`}>
+                                                loc.type === 'cabang' ? 'border-cyan-500 text-cyan-500' :
+                                                    'border-purple-500 text-purple-500'
+                                            }`}>
                                             {loc.type}
                                         </span>
                                     </div>
@@ -165,9 +163,9 @@ export default function CoverageMap() {
 
                 {/* Leaflet Map Area */}
                 <div className="w-full h-full bg-slate-950">
-                    <MapContainer 
-                        center={mapCenter} 
-                        zoom={mapZoom} 
+                    <MapContainer
+                        center={mapCenter}
+                        zoom={mapZoom}
                         zoomControl={false}
                         className="w-full h-full"
                     >
@@ -176,19 +174,19 @@ export default function CoverageMap() {
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                         />
-                        
+
                         <ChangeView center={mapCenter} zoom={mapZoom} />
 
                         {filteredLocations.map(loc => (
-                            <Marker 
-                                key={loc.id} 
-                                position={[loc.lat, loc.lng]} 
+                            <Marker
+                                key={loc.id}
+                                position={[loc.lat, loc.lng]}
                                 icon={createCustomIcon(loc.type)}
                             >
                                 <Popup closeButton={false}>
                                     <div className="p-4 w-full">
                                         <div className="w-full h-24 bg-slate-800 rounded-lg mb-3 overflow-hidden relative">
-                                            <img src={`https://source.unsplash.com/400x200/?city,${loc.city},building`} alt={loc.city} className="w-full h-full object-cover opacity-60 mix-blend-overlay" onError={(e)=>{e.target.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&q=80'}} />
+                                            <img src={`https://source.unsplash.com/400x200/?city,${loc.city},building`} alt={loc.city} className="w-full h-full object-cover opacity-60 mix-blend-overlay" onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&q=80' }} />
                                             <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent"></div>
                                             <div className="absolute bottom-2 left-2 right-2 flex justify-between items-end">
                                                 <h4 className="text-lg font-bold text-white leading-tight">{loc.city}</h4>
@@ -221,8 +219,8 @@ export default function CoverageMap() {
                             <Activity size={20} className="text-orange-500" />
                         </div>
                         <div>
-                            <div className="text-xl font-extrabold text-white">500+</div>
-                            <div className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold">Titik Layanan</div>
+                            <div className="text-xl font-extrabold text-white">1</div>
+                            <div className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold">Kantor Pusat</div>
                         </div>
                     </div>
                     <div className="h-8 w-px bg-slate-700"></div>
@@ -231,8 +229,8 @@ export default function CoverageMap() {
                             <MapPin size={20} className="text-blue-500" />
                         </div>
                         <div>
-                            <div className="text-xl font-extrabold text-white">34</div>
-                            <div className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold">Provinsi</div>
+                            <div className="text-xl font-extrabold text-white">7</div>
+                            <div className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold">Provinsi Coverage</div>
                         </div>
                     </div>
                     <div className="h-8 w-px bg-slate-700 hidden md:block"></div>
@@ -241,8 +239,8 @@ export default function CoverageMap() {
                             <Users size={20} className="text-cyan-500" />
                         </div>
                         <div>
-                            <div className="text-xl font-extrabold text-white">100+</div>
-                            <div className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold">Kota Besar</div>
+                            <div className="text-xl font-extrabold text-white">50+</div>
+                            <div className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold">Jangkauan Kota</div>
                         </div>
                     </div>
                     <div className="h-8 w-px bg-slate-700 hidden md:block"></div>
@@ -251,18 +249,18 @@ export default function CoverageMap() {
                             <ShieldCheck size={20} className="text-green-500" />
                         </div>
                         <div>
-                            <div className="text-xl font-extrabold text-white">98%</div>
-                            <div className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold">Jalur Keselamatan</div>
+                            <div className="text-xl font-extrabold text-white">99%</div>
+                            <div className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold">Tingkat Keamanan</div>
                         </div>
                     </div>
                 </div>
-                
+
                 <div className="text-xs text-slate-500 flex items-center gap-2 hidden md:flex">
                     <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
                     Sistem Aktif & Terhubung
                 </div>
             </div>
-            
+
         </div>
     );
 }

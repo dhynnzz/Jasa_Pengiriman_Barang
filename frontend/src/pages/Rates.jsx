@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import Layout from '../components/Layout';
+import SEO from '../components/SEO';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 
 export default function Rates() {
-  const [asal, setAsal] = useState('Jakarta, Indonesia');
-  const [tujuan, setTujuan] = useState('Surabaya, Indonesia');
-  const [berat, setBerat] = useState(5);
+  const [asal, setAsal] = useState('');
+  const [tujuan, setTujuan] = useState('');
+  const [berat, setBerat] = useState('');
   const [layanan, setLayanan] = useState('Standar');
 
   const [isLoading, setIsLoading] = useState(false);
@@ -20,7 +21,8 @@ export default function Rates() {
     setError('');
 
     try {
-      const response = await axios.post('http://localhost:8000/api/calculate-rate', {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+      const response = await axios.post(`${API_URL}/calculate-rate`, {
         asal: asal,
         tujuan: tujuan,
         berat: Number(berat),
@@ -62,6 +64,7 @@ export default function Rates() {
 
   return (
     <Layout>
+      <SEO title="Cek Tarif Ongkir" description="Hitung biaya pengiriman paket Anda dengan cepat dan mudah bersama Nabila Trans." />
       <div className="bg-gray-50 pb-20">
         {/* Header */}
         <motion.div 
@@ -103,6 +106,7 @@ export default function Rates() {
                       type="text"
                       value={asal}
                       onChange={(e) => setAsal(e.target.value)}
+                      placeholder="Contoh: Jakarta Pusat"
                       className="w-full bg-gray-50 border border-gray-200 text-gray-700 rounded-lg pl-10 pr-4 py-3 focus:outline-none focus:border-blue-500"
                     />
                   </div>
@@ -117,6 +121,7 @@ export default function Rates() {
                       type="text"
                       value={tujuan}
                       onChange={(e) => setTujuan(e.target.value)}
+                      placeholder="Contoh: Surabaya"
                       className="w-full bg-gray-50 border border-gray-200 text-gray-700 rounded-lg pl-10 pr-4 py-3 focus:outline-none focus:border-blue-500"
                     />
                   </div>
@@ -131,6 +136,7 @@ export default function Rates() {
                       type="number"
                       value={berat}
                       onChange={(e) => setBerat(e.target.value)}
+                      placeholder="Minimal 1 kg"
                       className="w-full bg-gray-50 border border-gray-200 text-gray-700 rounded-lg pl-10 pr-4 py-3 focus:outline-none focus:border-blue-500"
                     />
                   </div>
@@ -202,7 +208,7 @@ export default function Rates() {
                   </li>
                   <li className="flex gap-2">
                     <svg className="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
-                    <span className="text-sm text-gray-600">Jaringan luas lebih dari 500 kota di seluruh Indonesia</span>
+                    <span className="text-sm text-gray-600">Jaringan pengiriman luas di lebih dari 50 kota di Jawa dan Bali</span>
                   </li>
                 </ul>
               </div>
@@ -326,7 +332,7 @@ export default function Rates() {
               <div className="flex justify-between items-end mb-8">
                 <div>
                   <h2 className="text-2xl font-extrabold text-blue-950 mb-2">Estimasi Waktu Pengiriman</h2>
-                  <p className="text-gray-500 text-sm">Estimasi waktu rata-rata pengiriman antar kota besar di Indonesia.</p>
+                  <p className="text-gray-500 text-sm">Estimasi waktu rata-rata pengiriman antar kota besar di Jawa dan Bali.</p>
                 </div>
               </div>
 
@@ -371,7 +377,7 @@ export default function Rates() {
             </div>
             <div className="w-full lg:w-1/2">
               <div className="rounded-2xl overflow-hidden shadow-xl border border-gray-200 relative">
-                <img src="http://localhost:8000/images/map.png" alt="Route Map" className="w-full h-auto" />
+                <img src="/images/map.png" alt="Route Map" className="w-full h-auto" />
                 <div className="absolute bottom-6 left-6 text-white text-sm">
                   <p className="font-bold">Jaringan Distribusi Teroptimal</p>
                   <p className="opacity-80">Lebih dari 50 rute utama dengan ratusan jalur pendukung</p>
