@@ -17,14 +17,18 @@ export default function AdminLayout({ children, title }) {
         headers: { Authorization: `Bearer ${token}` }
       });
       
-      localStorage.removeItem('adminToken');
+      localStorage.clear();
       navigate('/login');
     } catch (error) {
       toast.error('Gagal logout');
     }
   };
 
-  const navItems = [
+  const adminRole = localStorage.getItem('adminRole') || 'Admin';
+  const adminName = localStorage.getItem('adminName') || 'Admin';
+  const initial = adminName.charAt(0).toUpperCase();
+
+  const allNavItems = [
     { name: 'Dashboard', path: '/', icon: <LayoutDashboard className="w-5 h-5 mr-3" /> },
     { name: 'Laporan', path: '/reports', icon: <PieChart className="w-5 h-5 mr-3" /> },
     { name: 'Manajemen Resi', path: '/shipments', icon: <Package className="w-5 h-5 mr-3" /> },
@@ -34,6 +38,11 @@ export default function AdminLayout({ children, title }) {
     { name: 'Pengguna', path: '/users', icon: <Users className="w-5 h-5 mr-3" /> },
     { name: 'Pengaturan', path: '/settings', icon: <Settings className="w-5 h-5 mr-3" /> },
   ];
+
+  // Filter menu items for Staf Operasional
+  const navItems = adminRole === 'Staf' 
+    ? allNavItems.filter(item => ['Dashboard', 'Manajemen Resi', 'Manajemen Kurir'].includes(item.name))
+    : allNavItems;
 
   return (
     <div className="min-h-screen bg-gray-50 flex font-sans">
@@ -90,9 +99,10 @@ export default function AdminLayout({ children, title }) {
           <div className="hidden md:block">
             <h1 className="text-xl font-bold text-gray-800">{title}</h1>
           </div>
-          <div className="flex items-center">
-             <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
-                <span className="text-sm font-medium text-gray-600">AD</span>
+          <div className="flex items-center gap-3">
+             <span className="hidden md:block text-sm font-medium text-gray-700">{adminName} ({adminRole})</span>
+             <div className="w-8 h-8 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center shadow-sm border border-blue-200">
+                <span className="text-sm font-bold">{initial}</span>
              </div>
           </div>
         </header>

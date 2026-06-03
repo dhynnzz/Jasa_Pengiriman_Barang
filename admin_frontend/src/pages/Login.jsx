@@ -24,6 +24,8 @@ export default function Login() {
 
       if (response.data.status === 'success') {
         localStorage.setItem('adminToken', response.data.token);
+        localStorage.setItem('adminRole', response.data.user.role || 'Admin');
+        localStorage.setItem('adminName', response.data.user.name || 'Admin');
         toast.success('Login berhasil!');
         navigate('/');
       }

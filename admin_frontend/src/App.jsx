@@ -14,11 +14,19 @@ import Users from './pages/Users';
 import Settings from './pages/Settings';
 
 // Protected Route Component
-const ProtectedRoute = ({ children }) => {
+const ProtectedRoute = ({ children, allowedRoles }) => {
   const token = localStorage.getItem('adminToken');
+  const role = localStorage.getItem('adminRole') || 'Admin';
+
   if (!token) {
     return <Navigate to="/login" replace />;
   }
+
+  // Jika allowedRoles ada dan role user tidak ada dalam allowedRoles, tolak akses
+  if (allowedRoles && !allowedRoles.includes(role)) {
+    return <Navigate to="/" replace />;
+  }
+
   return children;
 };
 
@@ -32,13 +40,15 @@ export default function App() {
         {/* Protected Routes */}
         <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         <Route path="/shipments" element={<ProtectedRoute><Shipments /></ProtectedRoute>} />
-        <Route path="/rates" element={<ProtectedRoute><Rates /></ProtectedRoute>} />
-        <Route path="/reports" element={<ProtectedRoute><Reports /></ProtectedRoute>} />
         <Route path="/drivers" element={<ProtectedRoute><Drivers /></ProtectedRoute>} />
-        <Route path="/partnerships" element={<ProtectedRoute><Partnerships /></ProtectedRoute>} />
-        <Route path="/users" element={<ProtectedRoute><Users /></ProtectedRoute>} />
-        <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
         <Route path="/print/waybill/:trackingNumber" element={<ProtectedRoute><PrintWaybill /></ProtectedRoute>} />
+        
+        {/* Restricted Routes (Only for Admin & Super Admin) */}
+        <Route path="/rates" element={<ProtectedRoute allowedRoles={['Admin', 'Super Admin']}><Rates /></ProtectedRoute>} />
+        <Route path="/reports" element={<ProtectedRoute allowedRoles={['Admin', 'Super Admin']}><Reports /></ProtectedRoute>} />
+        <Route path="/partnerships" element={<ProtectedRoute allowedRoles={['Admin', 'Super Admin']}><Partnerships /></ProtectedRoute>} />
+        <Route path="/users" element={<ProtectedRoute allowedRoles={['Admin', 'Super Admin']}><Users /></ProtectedRoute>} />
+        <Route path="/settings" element={<ProtectedRoute allowedRoles={['Admin', 'Super Admin']}><Settings /></ProtectedRoute>} />
         
         {/* Catch all redirect to dashboard */}
         <Route path="*" element={<Navigate to="/" replace />} />
