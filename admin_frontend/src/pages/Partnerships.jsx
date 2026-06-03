@@ -27,7 +27,7 @@ export default function Partnerships() {
     }
   };
 
-  const updateStatus = async (id, newStatus) => {
+  const updateStatus = async (id, newStatus, partnerName, partnerPhone) => {
     if (!window.confirm(`Ubah status pengajuan ini menjadi ${newStatus}?`)) return;
     
     // Optimistic update
@@ -40,6 +40,27 @@ export default function Partnerships() {
         headers: { Authorization: `Bearer ${token}` }
       });
       toast.success('Status berhasil diperbarui');
+
+      // Send WhatsApp Notification
+      if (window.confirm(`Status berhasil diubah. Buka WhatsApp untuk mengirim notifikasi ke ${partnerName}?`)) {
+        let phone = partnerPhone.replace(/\D/g, '');
+        if (phone.startsWith('0')) {
+          phone = '62' + phone.substring(1);
+        }
+        
+        let message = '';
+        if (newStatus === 'Disetujui') {
+          message = `Halo ${partnerName},\n\nSelamat! Pengajuan Anda sebagai Agen Nabila Trans telah *DISETUJUI*. 🎉\n\nTim kami akan segera menghubungi Anda kembali untuk proses penandatanganan kontrak dan setup sistem aplikasi.\n\nTerima kasih,\n*Nabila Trans*`;
+        } else if (newStatus === 'Ditolak') {
+          message = `Halo ${partnerName},\n\nTerima kasih atas minat Anda bergabung bersama Nabila Trans. Mohon maaf, setelah melakukan evaluasi, pengajuan agen Anda *BELUM DAPAT KAMI TERIMA* pada saat ini karena belum memenuhi kriteria penempatan wilayah kami.\n\nTetap semangat dan sukses selalu untuk Anda!\n\nTerima kasih,\n*Nabila Trans*`;
+        }
+        
+        if (message) {
+          const waUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+          window.open(waUrl, '_blank');
+        }
+      }
+
     } catch (error) {
       toast.error('Gagal memperbarui status');
       fetchPartnerships(); // revert on fail
@@ -131,13 +152,13 @@ export default function Partnerships() {
                   <td className="px-6 py-4 text-right">
                     <div className="flex justify-end gap-1">
                       <button 
-                        onClick={() => updateStatus(p.id, 'Disetujui')}
+                        onClick={() => updateStatus(p.id, 'Disetujui', p.name, p.phone)}
                         title="Setujui"
                         className="p-2 text-green-600 hover:bg-green-50 rounded-lg">
                         <CheckCircle className="w-4 h-4" />
                       </button>
                       <button 
-                        onClick={() => updateStatus(p.id, 'Ditolak')}
+                        onClick={() => updateStatus(p.id, 'Ditolak', p.name, p.phone)}
                         title="Tolak"
                         className="p-2 text-red-600 hover:bg-red-50 rounded-lg">
                         <XCircle className="w-4 h-4" />
