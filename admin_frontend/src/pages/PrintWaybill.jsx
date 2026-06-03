@@ -20,7 +20,7 @@ export default function PrintWaybill() {
           headers: { Authorization: `Bearer ${token}` }
         });
         
-        if (response.data.success) {
+        if (response.data.status === 'success' || response.data.success || response.data.data) {
           setShipment(response.data.data);
         }
       } catch (error) {
