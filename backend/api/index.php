@@ -21,6 +21,10 @@ if (isset($_ENV['VERCEL']) || isset($_SERVER['VERCEL'])) {
     $_SERVER['APP_ROUTES_CACHE'] = '/tmp/storage/bootstrap/cache/routes.php';
     $_SERVER['APP_SERVICES_CACHE'] = '/tmp/storage/bootstrap/cache/services.php';
     $_SERVER['VIEW_COMPILED_PATH'] = '/tmp/storage/framework/views';
+    
+    // Fix Laravel path resolution in Vercel
+    $_SERVER['SCRIPT_NAME'] = '/index.php';
+    $_SERVER['SCRIPT_FILENAME'] = __DIR__ . '/../public/index.php';
 }
 
 // Forward request to Laravel's entry point
