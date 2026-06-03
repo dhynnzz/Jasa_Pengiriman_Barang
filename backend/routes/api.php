@@ -25,6 +25,9 @@ Route::middleware('auth:sanctum')->group(function () {
     
     // Admin Dashboard Statistics
     Route::get('/admin/dashboard-stats', [DashboardController::class, 'index']);
+    
+    // Admin Reports
+    Route::get('/admin/reports', [\App\Http\Controllers\Admin\ReportController::class, 'index']);
 
     // Admin Shipments Management
     Route::apiResource('/admin/shipments', ShipmentController::class);
