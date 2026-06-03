@@ -15,7 +15,10 @@ Route::get('/user', function (Request $request) {
 Route::post('/admin/login', [\App\Http\Controllers\AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/admin/logout', [\App\Http\Controllers\AuthController::class, 'logout']);
-    // We will add shipment admin routes here later
+    
+    // Admin Shipments Management
+    Route::apiResource('/admin/shipments', \App\Http\Controllers\Admin\ShipmentController::class);
+    Route::post('/admin/shipments/{shipment}/history', [\App\Http\Controllers\Admin\ShipmentController::class, 'addHistory']);
 });
 
 Route::post('/calculate-rate', [RateController::class, 'calculate'])->name('api.rates.calculate');
