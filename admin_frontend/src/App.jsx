@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Shipments from './pages/Shipments';
 import Rates from './pages/Rates';
+import PrintWaybill from './pages/PrintWaybill';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -45,6 +46,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Rates />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/print/:id" 
+          element={
+            <ProtectedRoute>
+              <PrintWaybill />
             </ProtectedRoute>
           } 
         />

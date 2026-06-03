@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import AdminLayout from '../components/AdminLayout';
-import { Plus, Search, Edit2, MapPin, Trash2 } from 'lucide-react';
+import { Plus, Search, Edit2, MapPin, Trash2, Printer, Download } from 'lucide-react';
 
 export default function Shipments() {
+  const navigate = useNavigate();
   const [shipments, setShipments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -125,6 +127,44 @@ export default function Shipments() {
     }
   };
 
+  const handleExportCSV = () => {
+    if (shipments.length === 0) {
+      toast.error('Tidak ada data untuk diexport');
+      return;
+    }
+
+    // Buat header CSV
+    const headers = ['No Resi', 'Pengirim', 'Penerima', 'Asal', 'Tujuan', 'Layanan', 'Status', 'Tanggal Dibuat'];
+    
+    // Buat row data
+    const csvRows = shipments.map(s => [
+      s.tracking_number,
+      s.sender_name || '-',
+      s.receiver_name || '-',
+      s.origin,
+      s.destination,
+      s.service_type,
+      s.status,
+      new Date(s.created_at).toLocaleDateString('id-ID')
+    ]);
+    
+    // Gabungkan
+    const csvContent = [
+      headers.join(','),
+      ...csvRows.map(row => row.map(str => `"${str}"`).join(','))
+    ].join('\n');
+
+    // Buat blob dan unduh
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `Laporan_Resi_${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const filteredShipments = shipments.filter(s => 
     s.tracking_number.toLowerCase().includes(searchTerm.toLowerCase()) ||
     s.origin.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -148,13 +188,22 @@ export default function Shipments() {
               className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-sm"
             />
           </div>
-          <button
-            onClick={() => setIsAddModalOpen(true)}
-            className="w-full sm:w-auto flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm"
-          >
-            <Plus className="w-5 h-5 mr-2" />
-            Tambah Resi Baru
-          </button>
+          <div className="flex w-full sm:w-auto gap-2">
+            <button
+              onClick={handleExportCSV}
+              className="flex-1 sm:flex-none flex items-center justify-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium text-sm"
+            >
+              <Download className="w-5 h-5 sm:mr-2" />
+              <span className="hidden sm:inline">Export CSV</span>
+            </button>
+            <button
+              onClick={() => setIsAddModalOpen(true)}
+              className="flex-1 sm:flex-none flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm"
+            >
+              <Plus className="w-5 h-5 sm:mr-2" />
+              <span className="hidden sm:inline">Tambah Resi</span>
+            </button>
+          </div>
         </div>
 
         {/* Table */}
@@ -207,8 +256,8 @@ export default function Shipments() {
                         <button onClick={() => openUpdateModal(shipment)} title="Update Perjalanan" className="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors">
                           <MapPin className="w-4 h-4" />
                         </button>
-                        <button onClick={() => alert('Edit fitur dalam pengembangan')} title="Edit Data" className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
-                          <Edit2 className="w-4 h-4" />
+                        <button onClick={() => navigate(`/print/${shipment.id}`)} title="Cetak Resi" className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+                          <Printer className="w-4 h-4" />
                         </button>
                         <button onClick={() => handleDelete(shipment.id)} title="Hapus" className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors">
                           <Trash2 className="w-4 h-4" />
