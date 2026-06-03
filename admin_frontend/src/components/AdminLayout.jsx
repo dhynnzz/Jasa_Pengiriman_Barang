@@ -8,6 +8,19 @@ export default function AdminLayout({ children, title }) {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const [adminName, setAdminName] = React.useState(localStorage.getItem('adminName') || 'Admin');
+  const [adminRole, setAdminRole] = React.useState(localStorage.getItem('adminRole') || 'Admin');
+
+  React.useEffect(() => {
+    const handleProfileUpdate = () => {
+      setAdminName(localStorage.getItem('adminName') || 'Admin');
+      setAdminRole(localStorage.getItem('adminRole') || 'Admin');
+    };
+
+    window.addEventListener('profileUpdated', handleProfileUpdate);
+    return () => window.removeEventListener('profileUpdated', handleProfileUpdate);
+  }, []);
+
   const handleLogout = async () => {
     try {
       const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
@@ -24,8 +37,6 @@ export default function AdminLayout({ children, title }) {
     }
   };
 
-  const adminRole = localStorage.getItem('adminRole') || 'Admin';
-  const adminName = localStorage.getItem('adminName') || 'Admin';
   const initial = adminName.charAt(0).toUpperCase();
 
   const allNavItems = [

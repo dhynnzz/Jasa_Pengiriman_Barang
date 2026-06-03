@@ -55,4 +55,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // Settings
     Route::get('/admin/settings', [\App\Http\Controllers\SettingController::class, 'index']);
     Route::post('/admin/settings', [\App\Http\Controllers\SettingController::class, 'update']);
+    
+    // Profile (Current logged-in user)
+    Route::get('/admin/profile', [\App\Http\Controllers\UserController::class, 'getProfile']);
+    Route::put('/admin/profile', [\App\Http\Controllers\UserController::class, 'updateProfile']);
 });
