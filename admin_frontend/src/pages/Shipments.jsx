@@ -112,18 +112,22 @@ export default function Shipments() {
   const handleDelete = async (id) => {
     if (!window.confirm('Apakah Anda yakin ingin menghapus resi ini?')) return;
     
+    // Hapus dari tampilan seketika (Optimistic Update)
+    setShipments(prev => prev.filter(shipment => shipment.id !== id));
+    toast.success('Resi berhasil dihapus');
+    
     try {
       const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
       const token = localStorage.getItem('adminToken');
       
+      // Hapus dari database di belakang layar
       await axios.delete(`${API_URL}/admin/shipments/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      
-      toast.success('Resi berhasil dihapus');
-      fetchShipments();
     } catch (error) {
-      toast.error('Gagal menghapus resi');
+      toast.error('Gagal menghapus resi di server');
+      // Kembalikan data (jika perlu) bisa dilakukan di sini dengan fetch ulang
+      fetchShipments();
     }
   };
 
