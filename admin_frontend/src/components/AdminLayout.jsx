@@ -1,20 +1,38 @@
 import React from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { Package, LayoutDashboard, LogOut, Menu, IndianRupee } from 'lucide-react';
+import { Package, LayoutDashboard, LogOut, Menu, IndianRupee, Truck, PieChart, Users, Store, Settings } from 'lucide-react';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 export default function AdminLayout({ children, title }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleLogout = () => {
-    localStorage.removeItem('adminToken');
-    navigate('/login');
+  const handleLogout = async () => {
+    try {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+      const token = localStorage.getItem('adminToken');
+      
+      await axios.post(`${API_URL}/admin/logout`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      localStorage.removeItem('adminToken');
+      navigate('/login');
+    } catch (error) {
+      toast.error('Gagal logout');
+    }
   };
 
   const navItems = [
     { name: 'Dashboard', path: '/', icon: <LayoutDashboard className="w-5 h-5 mr-3" /> },
+    { name: 'Laporan', path: '/reports', icon: <PieChart className="w-5 h-5 mr-3" /> },
     { name: 'Manajemen Resi', path: '/shipments', icon: <Package className="w-5 h-5 mr-3" /> },
     { name: 'Manajemen Tarif', path: '/rates', icon: <IndianRupee className="w-5 h-5 mr-3" /> },
+    { name: 'Kurir & Armada', path: '/drivers', icon: <Truck className="w-5 h-5 mr-3" /> },
+    { name: 'Cabang & Agen', path: '/branches', icon: <Store className="w-5 h-5 mr-3" /> },
+    { name: 'Pengguna', path: '/users', icon: <Users className="w-5 h-5 mr-3" /> },
+    { name: 'Pengaturan', path: '/settings', icon: <Settings className="w-5 h-5 mr-3" /> },
   ];
 
   return (

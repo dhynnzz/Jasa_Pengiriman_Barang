@@ -14,6 +14,16 @@ export default function Navbar() {
     setIsMobileMenuOpen(false);
   }, [location.pathname]);
 
+  const navLinks = [
+    { name: 'Beranda', path: '/' },
+    { name: 'Lacak Resi', path: '/track' },
+    { name: 'Layanan', path: '/services' },
+    { name: 'Jangkauan', path: '/coverage' },
+    { name: 'Lokasi Cabang', path: '/branches' },
+    { name: 'Kemitraan', path: '/partnership' },
+    { name: 'Bantuan', path: '/help' },
+  ];
+
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious();
     if (latest > 100 && latest > previous) {

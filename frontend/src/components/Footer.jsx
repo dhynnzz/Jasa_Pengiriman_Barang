@@ -27,23 +27,23 @@ export default function Footer() {
 
           {/* Layanan */}
           <div>
-            <h4 className="font-bold text-blue-950 mb-3 md:mb-6 text-sm">Layanan</h4>
-            <ul className="space-y-2 md:space-y-4">
-              <li><Link to="/services" className="text-gray-500 hover:text-blue-600 text-sm transition-colors">Pengiriman Ekspres</Link></li>
-              <li><Link to="/services" className="text-gray-500 hover:text-blue-600 text-sm transition-colors">Logistik Kargo</Link></li>
-              <li><Link to="/services" className="text-gray-500 hover:text-blue-600 text-sm transition-colors">Antar Kota</Link></li>
-              <li><Link to="/services" className="text-gray-500 hover:text-blue-600 text-sm transition-colors">B2B Bisnis</Link></li>
+            <h4 className="text-blue-950 font-bold mb-4">Perusahaan</h4>
+            <ul className="space-y-2 text-gray-500 text-sm">
+              <li><Link to="/about" className="hover:text-blue-600 transition-colors">Tentang Kami</Link></li>
+              <li><Link to="/branches" className="hover:text-blue-600 transition-colors">Lokasi Cabang</Link></li>
+              <li><Link to="/partnership" className="hover:text-blue-600 transition-colors">Kemitraan Agen</Link></li>
+              <li><Link to="/careers" className="hover:text-blue-600 transition-colors">Karir</Link></li>
+              <li><Link to="/blog" className="hover:text-blue-600 transition-colors">Blog & Berita</Link></li>
             </ul>
           </div>
-
-          {/* Tautan Cepat */}
           <div>
-            <h4 className="font-bold text-blue-950 mb-3 md:mb-6 text-sm">Tautan Cepat</h4>
-            <ul className="space-y-2 md:space-y-4">
-              <li><Link to="/tracking" className="text-gray-500 hover:text-blue-600 text-sm transition-colors">Lacak Pengiriman</Link></li>
-              <li><Link to="/rates" className="text-gray-500 hover:text-blue-600 text-sm transition-colors">Biaya Pengiriman</Link></li>
-              <li><Link to="/about" className="text-gray-500 hover:text-blue-600 text-sm transition-colors">Tentang Kami</Link></li>
-              <li><Link to="/help" className="text-gray-500 hover:text-blue-600 text-sm transition-colors">Pusat Bantuan</Link></li>
+            <h4 className="text-blue-950 font-bold mb-4">Layanan Pelanggan</h4>
+            <ul className="space-y-2 text-gray-500 text-sm">
+              <li><Link to="/help" className="hover:text-blue-600 transition-colors">Pusat Bantuan</Link></li>
+              <li><Link to="/track" className="hover:text-blue-600 transition-colors">Lacak Paket</Link></li>
+              <li><Link to="/#rates" className="hover:text-blue-600 transition-colors">Cek Tarif</Link></li>
+              <li><Link to="/terms" className="hover:text-blue-600 transition-colors">Syarat & Ketentuan</Link></li>
+              <li><Link to="/privacy" className="hover:text-blue-600 transition-colors">Kebijakan Privasi</Link></li>
             </ul>
           </div>
 

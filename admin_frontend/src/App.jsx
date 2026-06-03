@@ -7,6 +7,11 @@ import Dashboard from './pages/Dashboard';
 import Shipments from './pages/Shipments';
 import Rates from './pages/Rates';
 import PrintWaybill from './pages/PrintWaybill';
+import Reports from './pages/Reports';
+import Drivers from './pages/Drivers';
+import Branches from './pages/Branches';
+import Users from './pages/Users';
+import Settings from './pages/Settings';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -46,6 +51,46 @@ function App() {
           element={
             <ProtectedRoute>
               <Rates />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/reports" 
+          element={
+            <ProtectedRoute>
+              <Reports />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/drivers" 
+          element={
+            <ProtectedRoute>
+              <Drivers />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/branches" 
+          element={
+            <ProtectedRoute>
+              <Branches />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/users" 
+          element={
+            <ProtectedRoute>
+              <Users />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/settings" 
+          element={
+            <ProtectedRoute>
+              <Settings />
             </ProtectedRoute>
           } 
         />
