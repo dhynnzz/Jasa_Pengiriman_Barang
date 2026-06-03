@@ -12,7 +12,6 @@ import Tracking from './pages/Tracking';
 import CoverageMap from './pages/CoverageMap';
 import Track from './pages/Track';
 import Partnership from './pages/Partnership';
-import Branches from './pages/Branches';
 
 import { Toaster } from 'react-hot-toast';
 import AILiveChat from './components/AILiveChat';
@@ -40,7 +39,6 @@ function App() {
             <Route path="/coverage-map" element={<CoverageMap />} />
             <Route path="/track" element={<Track />} />
             <Route path="/partnership" element={<Partnership />} />
-            <Route path="/branches" element={<Branches />} />
           </Routes>
         </main>
         <Footer />

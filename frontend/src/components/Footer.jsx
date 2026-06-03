@@ -30,10 +30,8 @@ export default function Footer() {
             <h4 className="text-blue-950 font-bold mb-4">Perusahaan</h4>
             <ul className="space-y-2 text-gray-500 text-sm">
               <li><Link to="/about" className="hover:text-blue-600 transition-colors">Tentang Kami</Link></li>
-              <li><Link to="/branches" className="hover:text-blue-600 transition-colors">Lokasi Cabang</Link></li>
+              <li><Link to="/coverage-map" className="hover:text-blue-600 transition-colors">Kantor Pusat & Pengiriman</Link></li>
               <li><Link to="/partnership" className="hover:text-blue-600 transition-colors">Kemitraan Agen</Link></li>
-              <li><Link to="/careers" className="hover:text-blue-600 transition-colors">Karir</Link></li>
-              <li><Link to="/blog" className="hover:text-blue-600 transition-colors">Blog & Berita</Link></li>
             </ul>
           </div>
           <div>

@@ -19,7 +19,6 @@ export default function Navbar() {
     { name: 'Lacak Resi', path: '/track' },
     { name: 'Layanan', path: '/services' },
     { name: 'Jangkauan', path: '/coverage' },
-    { name: 'Lokasi Cabang', path: '/branches' },
     { name: 'Kemitraan', path: '/partnership' },
     { name: 'Bantuan', path: '/help' },
   ];
