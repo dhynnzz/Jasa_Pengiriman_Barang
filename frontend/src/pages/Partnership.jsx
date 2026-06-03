@@ -1,7 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Store, Handshake, TrendingUp, CheckCircle, ArrowRight } from 'lucide-react';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 export default function Partnership() {
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    address: '',
+    city: '',
+    place_status: 'Sudah (Milik Sendiri)'
+  });
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    
+    try {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+      await axios.post(`${API_URL}/partnerships`, formData);
+      toast.success('Pengajuan berhasil dikirim! Tim kami akan menghubungi Anda.');
+      setFormData({
+        name: '',
+        phone: '',
+        email: '',
+        address: '',
+        city: '',
+        place_status: 'Sudah (Milik Sendiri)'
+      });
+    } catch (error) {
+      toast.error('Gagal mengirim pengajuan. Silakan coba lagi.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="pt-24 pb-20">
       {/* Hero Section */}
@@ -63,46 +98,46 @@ export default function Partnership() {
               <p className="text-gray-600">Isi data diri Anda, tim kami akan segera menghubungi Anda.</p>
             </div>
             
-            <form className="space-y-6">
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Nama Lengkap</label>
-                  <input type="text" className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent" placeholder="Sesuai KTP" />
+                  <input required type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent" placeholder="Sesuai KTP" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Nomor WhatsApp</label>
-                  <input type="tel" className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent" placeholder="0812..." />
+                  <input required type="tel" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent" placeholder="0812..." />
                 </div>
               </div>
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                <input type="email" className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent" placeholder="email@anda.com" />
+                <input required type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent" placeholder="email@anda.com" />
               </div>
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Alamat Calon Lokasi Agen</label>
-                <textarea rows="3" className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent" placeholder="Jalan, RT/RW, Kelurahan..."></textarea>
+                <textarea required rows="3" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent" placeholder="Jalan, RT/RW, Kelurahan..."></textarea>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Kota/Kabupaten</label>
-                  <input type="text" className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent" placeholder="Misal: Malang" />
+                  <input required type="text" value={formData.city} onChange={e => setFormData({...formData, city: e.target.value})} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent" placeholder="Misal: Malang" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Apakah sudah memiliki tempat/ruko?</label>
-                  <select className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent bg-white">
-                    <option>Sudah (Milik Sendiri)</option>
-                    <option>Sudah (Sewa)</option>
-                    <option>Belum</option>
+                  <select value={formData.place_status} onChange={e => setFormData({...formData, place_status: e.target.value})} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent bg-white">
+                    <option value="Sudah (Milik Sendiri)">Sudah (Milik Sendiri)</option>
+                    <option value="Sudah (Sewa)">Sudah (Sewa)</option>
+                    <option value="Belum">Belum</option>
                   </select>
                 </div>
               </div>
 
               <div className="pt-4">
-                <button type="button" onClick={() => alert('Formulir berhasil dikirim! (Demo)')} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg transition-colors text-lg">
-                  Kirim Pengajuan
+                <button type="submit" disabled={loading} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg transition-colors text-lg disabled:opacity-50">
+                  {loading ? 'Mengirim...' : 'Kirim Pengajuan'}
                 </button>
               </div>
             </form>

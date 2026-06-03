@@ -2,31 +2,47 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RateController;
 
-use App\Http\Controllers\TrackingController;
-use App\Http\Controllers\ChatController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ShipmentController;
+use App\Http\Controllers\Admin\RateController;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+use App\Http\Controllers\DriverController;
+use App\Http\Controllers\BranchController;
+use App\Http\Controllers\PartnershipController;
 
-// Admin Auth
-Route::post('/admin/login', [\App\Http\Controllers\AuthController::class, 'login']);
+// Auth Route
+Route::post('/admin/login', [AuthController::class, 'login']);
+
+// Public Routes (if needed)
+Route::get('/branches', [BranchController::class, 'index']); // Public access to branches
+Route::post('/partnerships', [PartnershipController::class, 'store']); // Public submit form
+
+// Protected Admin Routes
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/admin/logout', [\App\Http\Controllers\AuthController::class, 'logout']);
+    Route::post('/admin/logout', [AuthController::class, 'logout']);
     
     // Admin Dashboard Statistics
-    Route::get('/admin/dashboard-stats', [\App\Http\Controllers\Admin\DashboardController::class, 'index']);
+    Route::get('/admin/dashboard-stats', [DashboardController::class, 'index']);
 
     // Admin Shipments Management
-    Route::apiResource('/admin/shipments', \App\Http\Controllers\Admin\ShipmentController::class);
-    Route::post('/admin/shipments/{id}/history', [\App\Http\Controllers\Admin\ShipmentController::class, 'addHistory']);
+    Route::apiResource('/admin/shipments', ShipmentController::class);
+    Route::post('/admin/shipments/{id}/history', [ShipmentController::class, 'addHistory']);
 
     // Admin Rates Management
-    Route::apiResource('/admin/rates', \App\Http\Controllers\Admin\RateController::class);
+    Route::apiResource('/admin/rates', RateController::class);
+    
+    // Drivers
+    Route::apiResource('/admin/drivers', DriverController::class);
+    
+    // Branches (Admin management)
+    Route::post('/admin/branches', [BranchController::class, 'store']);
+    Route::put('/admin/branches/{id}', [BranchController::class, 'update']);
+    Route::delete('/admin/branches/{id}', [BranchController::class, 'destroy']);
+    
+    // Partnerships (Admin view/update)
+    Route::get('/admin/partnerships', [PartnershipController::class, 'index']);
+    Route::put('/admin/partnerships/{id}', [PartnershipController::class, 'update']);
+    Route::delete('/admin/partnerships/{id}', [PartnershipController::class, 'destroy']);
 });
-
-Route::post('/calculate-rate', [RateController::class, 'calculate'])->name('api.rates.calculate');
-Route::get('/tracking/{resi}', [TrackingController::class, 'apiSearch']);
-Route::post('/chat', [ChatController::class, 'send']);

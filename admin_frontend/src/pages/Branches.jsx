@@ -1,13 +1,49 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import AdminLayout from '../components/AdminLayout';
-import { Store, Plus, Search, Edit2, Trash2 } from 'lucide-react';
+import { Store, MapPin, Phone, Plus, Search, Edit2, Trash2 } from 'lucide-react';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 export default function Branches() {
-  const branches = [
-    { id: 1, name: 'Kantor Pusat Malang', type: 'Kantor Pusat', address: 'Jl. Raya Candi 3, Karangbesuki', city: 'Malang', phone: '0341-123456' },
-    { id: 2, name: 'Agen Nabila Surabaya', type: 'Agen', address: 'Jl. Ahmad Yani No. 100', city: 'Surabaya', phone: '0812-9999-8888' },
-    { id: 3, name: 'Cabang Jakarta Selatan', type: 'Cabang', address: 'Jl. Sudirman Kav 20', city: 'Jakarta', phone: '021-9876543' },
-  ];
+  const [branches, setBranches] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchBranches();
+  }, []);
+
+  const fetchBranches = async () => {
+    try {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+      const token = localStorage.getItem('adminToken');
+      const response = await axios.get(`${API_URL}/branches`, { // Public route
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setBranches(response.data);
+    } catch (error) {
+      toast.error('Gagal mengambil data cabang');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm('Hapus cabang ini?')) return;
+    
+    setBranches(prev => prev.filter(b => b.id !== id));
+    toast.success('Cabang dihapus');
+    
+    try {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+      const token = localStorage.getItem('adminToken');
+      await axios.delete(`${API_URL}/admin/branches/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+    } catch (error) {
+      toast.error('Gagal menghapus cabang');
+      fetchBranches();
+    }
+  };
 
   return (
     <AdminLayout title="Manajemen Cabang & Agen">
@@ -20,12 +56,12 @@ export default function Branches() {
             </div>
             <input
               type="text"
-              placeholder="Cari cabang atau kota..."
+              placeholder="Cari nama agen atau kota..."
               className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-sm"
             />
           </div>
           <button className="w-full sm:w-auto flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm">
-            <Plus className="w-5 h-5 mr-2" /> Tambah Cabang
+            <Plus className="w-5 h-5 mr-2" /> Tambah Cabang Baru
           </button>
         </div>
 
@@ -34,38 +70,56 @@ export default function Branches() {
           <table className="w-full text-sm text-left text-gray-500">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 border-b border-gray-100">
               <tr>
-                <th className="px-6 py-4 font-medium text-gray-900">Nama Cabang</th>
-                <th className="px-6 py-4 font-medium text-gray-900">Tipe</th>
-                <th className="px-6 py-4 font-medium text-gray-900">Kota</th>
+                <th className="px-6 py-4 font-medium text-gray-900">Nama Cabang / Agen</th>
                 <th className="px-6 py-4 font-medium text-gray-900">Alamat Lengkap</th>
-                <th className="px-6 py-4 font-medium text-gray-900">Telepon</th>
+                <th className="px-6 py-4 font-medium text-gray-900">Kontak</th>
                 <th className="px-6 py-4 font-medium text-gray-900 text-right">Aksi</th>
               </tr>
             </thead>
             <tbody>
-              {branches.map(branch => (
+              {loading ? (
+                <tr>
+                  <td colSpan="4" className="px-6 py-4 text-center text-gray-500">Memuat data...</td>
+                </tr>
+              ) : branches.length === 0 ? (
+                <tr>
+                  <td colSpan="4" className="px-6 py-4 text-center text-gray-500">Belum ada data cabang</td>
+                </tr>
+              ) : branches.map(branch => (
                 <tr key={branch.id} className="bg-white border-b hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4">
                     <div className="flex items-center">
-                      <Store className="w-5 h-5 text-gray-400 mr-2" />
-                      <span className="font-semibold text-gray-900">{branch.name}</span>
+                      <div className={`p-2 rounded-lg mr-3 ${
+                        branch.type === 'Pusat' ? 'bg-purple-100 text-purple-600' :
+                        branch.type === 'Cabang Utama' ? 'bg-blue-100 text-blue-600' :
+                        'bg-green-100 text-green-600'
+                      }`}>
+                        <Store className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <div className="font-semibold text-gray-900">{branch.name}</div>
+                        <div className="text-xs text-gray-500">{branch.type}</div>
+                      </div>
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <span className={`px-2 py-1 rounded text-xs font-medium ${
-                      branch.type === 'Kantor Pusat' ? 'bg-purple-100 text-purple-700' :
-                      branch.type === 'Cabang' ? 'bg-blue-100 text-blue-700' :
-                      'bg-green-100 text-green-700'
-                    }`}>
-                      {branch.type}
-                    </span>
+                    <div className="flex items-start text-gray-700">
+                      <MapPin className="w-4 h-4 mr-2 mt-0.5 text-gray-400 flex-shrink-0" />
+                      <div>
+                        <div className="line-clamp-1">{branch.address}</div>
+                        <div className="text-xs text-gray-500">{branch.city}</div>
+                      </div>
+                    </div>
                   </td>
-                  <td className="px-6 py-4 text-gray-700 font-medium">{branch.city}</td>
-                  <td className="px-6 py-4 text-gray-500">{branch.address}</td>
-                  <td className="px-6 py-4 text-gray-700">{branch.phone}</td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center text-gray-600">
+                      <Phone className="w-4 h-4 mr-1 text-gray-400" />
+                      {branch.phone}
+                    </div>
+                  </td>
                   <td className="px-6 py-4 text-right">
                     <button className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg mr-1"><Edit2 className="w-4 h-4" /></button>
-                    <button className="p-2 text-red-600 hover:bg-red-50 rounded-lg"><Trash2 className="w-4 h-4" /></button>
+                    <button onClick={() => handleDelete(branch.id)} className="p-2 text-red-600 hover:bg-red-50 rounded-lg"><Trash2 className="w-4 h-4" /></button>
                   </td>
                 </tr>
               ))}

@@ -1,51 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, MapPin, Phone, Clock, Navigation } from 'lucide-react';
+import axios from 'axios';
 
 export default function Branches() {
   const [search, setSearch] = useState('');
+  const [branches, setBranches] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const branches = [
-    { 
-      id: 1, 
-      name: 'Kantor Pusat Malang', 
-      type: 'Kantor Pusat', 
-      address: 'Jl. Raya Candi 3, Karangbesuki, Kec. Sukun, Kota Malang', 
-      phone: '0341-123456',
-      hours: '08:00 - 17:00 (Senin - Sabtu)',
-      lat: -7.9543,
-      lng: 112.6130
-    },
-    { 
-      id: 2, 
-      name: 'Agen Nabila Surabaya', 
-      type: 'Agen', 
-      address: 'Jl. Ahmad Yani No. 100, Wonocolo, Surabaya', 
-      phone: '0812-9999-8888',
-      hours: '08:00 - 20:00 (Setiap Hari)',
-      lat: -7.3193,
-      lng: 112.7323
-    },
-    { 
-      id: 3, 
-      name: 'Cabang Jakarta Selatan', 
-      type: 'Cabang Utama', 
-      address: 'Jl. Sudirman Kav 20, Setiabudi, Jakarta Selatan', 
-      phone: '021-9876543',
-      hours: '07:00 - 21:00 (Setiap Hari)',
-      lat: -6.2201,
-      lng: 106.8222
-    },
-    { 
-      id: 4, 
-      name: 'Sub-Agen Batu', 
-      type: 'Agen', 
-      address: 'Jl. Diponegoro No. 45, Sisir, Kota Batu', 
-      phone: '0856-1111-2222',
-      hours: '09:00 - 16:00 (Senin - Sabtu)',
-      lat: -7.8711,
-      lng: 112.5270
-    },
-  ];
+  useEffect(() => {
+    const fetchBranches = async () => {
+      try {
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+        const response = await axios.get(`${API_URL}/branches`);
+        setBranches(response.data);
+      } catch (error) {
+        console.error('Failed to fetch branches', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBranches();
+  }, []);
 
   const filteredBranches = branches.filter(b => 
     b.name.toLowerCase().includes(search.toLowerCase()) || 
@@ -77,7 +52,11 @@ export default function Branches() {
             </div>
 
             <div className="flex-1 overflow-y-auto space-y-4 pr-2">
-              {filteredBranches.map(branch => (
+              {loading ? (
+                <div className="text-center py-10 bg-white rounded-xl border border-gray-100">
+                  <p className="text-gray-500">Memuat data cabang...</p>
+                </div>
+              ) : filteredBranches.map(branch => (
                 <div key={branch.id} className="bg-white p-5 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer hover:border-blue-300">
                   <div className="flex justify-between items-start mb-2">
                     <h3 className="font-bold text-gray-900 text-lg">{branch.name}</h3>
