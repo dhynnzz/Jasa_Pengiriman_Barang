@@ -18,6 +18,7 @@ Route::post('/admin/login', [AuthController::class, 'login']);
 // Public Routes (if needed)
 Route::get('/branches', [BranchController::class, 'index']); // Public access to branches
 Route::post('/partnerships', [PartnershipController::class, 'store']); // Public submit form
+Route::post('/calculate-rate', [RateController::class, 'calculatePublic']); // Public calculate rate
 
 // Protected Admin Routes
 Route::middleware('auth:sanctum')->group(function () {

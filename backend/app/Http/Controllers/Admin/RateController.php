@@ -81,4 +81,44 @@ class RateController extends Controller
             'message' => 'Rate deleted successfully'
         ]);
     }
+
+    public function calculatePublic(Request $request)
+    {
+        $validated = $request->validate([
+            'asal' => 'required|string',
+            'tujuan' => 'required|string',
+            'berat' => 'required|numeric|min:1',
+            'layanan' => 'required|string|in:Ekonomi,Standar,Express'
+        ]);
+
+        $berat = $validated['berat'];
+        $layanan = $validated['layanan'];
+
+        $tarif_per_kg = 25000;
+        if ($layanan == 'Ekonomi') $tarif_per_kg = 12500;
+        if ($layanan == 'Express') $tarif_per_kg = 45000;
+
+        // Mock distance calculation based on string hash for consistency
+        $seed = md5(strtolower($validated['asal'] . $validated['tujuan']));
+        $jarak_km = hexdec(substr($seed, 0, 4)) % 1000 + 10; // 10 to 1009 km
+
+        $biaya_berat = $tarif_per_kg * $berat;
+        $biaya_jarak = $jarak_km * 200;
+        $total = $biaya_berat + $biaya_jarak;
+
+        $estimasi = "1-2 Hari Kerja";
+        if ($layanan == 'Ekonomi') $estimasi = "3-5 Hari Kerja";
+        if ($layanan == 'Express') $estimasi = "1 Hari Kerja (Next Day)";
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'total' => $total,
+                'rute' => strtoupper($validated['asal']) . ' ➔ ' . strtoupper($validated['tujuan']),
+                'estimasi' => $estimasi,
+                'is_map_success' => true,
+                'teks_jarak' => "Jarak tempuh rute darat: " . $jarak_km . " km"
+            ]
+        ]);
+    }
 }
