@@ -34,7 +34,7 @@ class ShipmentController extends Controller
         ]);
 
         if (empty($validated['tracking_number'])) {
-            $validated['tracking_number'] = 'NT' . strtoupper(Str::random(8));
+            $validated['tracking_number'] = 'NBL-' . strtoupper(Str::random(8));
         }
 
         $shipment = Shipment::create($validated);
