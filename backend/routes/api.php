@@ -11,6 +11,13 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+// Admin Auth
+Route::post('/admin/login', [\App\Http\Controllers\AuthController::class, 'login']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/admin/logout', [\App\Http\Controllers\AuthController::class, 'logout']);
+    // We will add shipment admin routes here later
+});
+
 Route::post('/calculate-rate', [RateController::class, 'calculate'])->name('api.rates.calculate');
 Route::get('/tracking/{resi}', [TrackingController::class, 'apiSearch']);
 Route::post('/chat', [ChatController::class, 'send']);
