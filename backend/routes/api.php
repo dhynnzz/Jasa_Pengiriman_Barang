@@ -20,6 +20,7 @@ Route::get('/branches', [BranchController::class, 'index']); // Public access to
 Route::post('/partnerships', [PartnershipController::class, 'store']); // Public submit form
 Route::post('/calculate-rate', [RateController::class, 'calculatePublic']); // Public calculate rate
 Route::get('/tracking/{resi}', [\App\Http\Controllers\Admin\ShipmentController::class, 'track']); // Public tracking
+Route::post('/chat', [\App\Http\Controllers\ChatController::class, 'send']); // Public AI chat
 
 // Protected Admin Routes
 Route::middleware('auth:sanctum')->group(function () {
