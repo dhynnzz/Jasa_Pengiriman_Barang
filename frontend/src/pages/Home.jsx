@@ -52,14 +52,14 @@ export default function Home() {
               <p className="text-gray-600 text-lg mb-8 leading-relaxed max-w-lg">
                 Permudah logistik Anda dengan solusi pengiriman berbasis teknologi kami. Kami menghadirkan konsistensi layanan yang setara dengan tenaga profesional terbaik.
               </p>
-              <div className="flex items-center gap-4">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <Link to="/tracking" className="bg-orange-500 text-white px-8 py-3 rounded-md font-semibold hover:bg-orange-600 transition-colors shadow-lg flex items-center gap-2">
                   Lacak Paket
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                   </svg>
                 </Link>
-                <div className="flex items-center gap-3 text-white/80 text-sm">
+                <div className="flex items-center gap-3 text-gray-600 text-sm mt-2 sm:mt-0">
                   <div className="flex -space-x-2">
                   </div>
                   <span>Dipercaya 10k+ Pelanggan</span>
