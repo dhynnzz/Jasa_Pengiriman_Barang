@@ -7,9 +7,16 @@ use Illuminate\Http\Request;
 
 class PartnershipController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Partnership::latest()->get());
+        $query = Partnership::latest();
+        
+        if ($request->has('month') && $request->has('year')) {
+            $query->whereMonth('created_at', $request->month)
+                  ->whereYear('created_at', $request->year);
+        }
+
+        return response()->json($query->get());
     }
 
     public function store(Request $request)
