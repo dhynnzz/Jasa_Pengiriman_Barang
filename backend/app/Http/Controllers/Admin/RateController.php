@@ -106,9 +106,24 @@ class RateController extends Controller
         $biaya_jarak = $jarak_km * 200;
         $total = $biaya_berat + $biaya_jarak;
 
-        $estimasi = "1-2 Hari Kerja";
-        if ($layanan == 'Ekonomi') $estimasi = "3-5 Hari Kerja";
-        if ($layanan == 'Express') $estimasi = "1 Hari Kerja (Next Day)";
+        // Estimasi waktu tiba berdasarkan jarak (asumsi 1 hari = 500 km tempuh)
+        $base_days = max(1, ceil($jarak_km / 500));
+        
+        if ($layanan == 'Ekonomi') {
+            $min = $base_days + 2;
+            $max = $base_days + 3;
+            $estimasi = "{$min}-{$max} Hari Kerja";
+        } elseif ($layanan == 'Express') {
+            if ($jarak_km < 150) {
+                $estimasi = "Hari Ini (Sameday)";
+            } else {
+                $estimasi = "{$base_days} Hari Kerja";
+            }
+        } else { // Standar
+            $min = $base_days + 1;
+            $max = $base_days + 2;
+            $estimasi = "{$min}-{$max} Hari Kerja";
+        }
 
         return response()->json([
             'success' => true,
