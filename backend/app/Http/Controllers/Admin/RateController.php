@@ -82,6 +82,39 @@ class RateController extends Controller
         ]);
     }
 
+    private function getCoordinates($city) {
+        try {
+            $response = \Illuminate\Support\Facades\Http::withHeaders([
+                'User-Agent' => 'NabilaTrans/1.0'
+            ])->timeout(5)->get('https://nominatim.openstreetmap.org/search', [
+                'q' => $city . ', Indonesia',
+                'format' => 'json',
+                'limit' => 1
+            ]);
+            
+            if ($response->successful() && count($response->json()) > 0) {
+                $data = $response->json()[0];
+                return [
+                    'lat' => (float)$data['lat'],
+                    'lon' => (float)$data['lon']
+                ];
+            }
+        } catch (\Exception $e) {
+            // Ignore timeout or errors
+        }
+        return null;
+    }
+
+    private function calculateHaversineDistance($lat1, $lon1, $lat2, $lon2) {
+        $earthRadius = 6371; // Radius of earth in km
+        $dLat = deg2rad($lat2 - $lat1);
+        $dLon = deg2rad($lon2 - $lon1);
+        $a = sin($dLat/2) * sin($dLat/2) + cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * sin($dLon/2) * sin($dLon/2);
+        $c = 2 * atan2(sqrt($a), sqrt(1-$a));
+        $distance = $earthRadius * $c;
+        return $distance;
+    }
+
     public function calculatePublic(Request $request)
     {
         $validated = $request->validate([
@@ -98,9 +131,22 @@ class RateController extends Controller
         if ($layanan == 'Ekonomi') $tarif_per_kg = 12500;
         if ($layanan == 'Express') $tarif_per_kg = 45000;
 
-        // Mock distance calculation based on string hash for consistency
-        $seed = md5(strtolower($validated['asal'] . $validated['tujuan']));
-        $jarak_km = hexdec(substr($seed, 0, 4)) % 1000 + 10; // 10 to 1009 km
+        // Dapatkan koordinat nyata
+        $asalCoords = $this->getCoordinates($validated['asal']);
+        $tujuanCoords = $this->getCoordinates($validated['tujuan']);
+        
+        $is_real_distance = false;
+
+        if ($asalCoords && $tujuanCoords) {
+            $straight_jarak_km = $this->calculateHaversineDistance($asalCoords['lat'], $asalCoords['lon'], $tujuanCoords['lat'], $tujuanCoords['lon']);
+            // Convert straight line to approximate driving distance (multiplier 1.4 for winding roads in Indonesia)
+            $jarak_km = ceil($straight_jarak_km * 1.4);
+            $is_real_distance = true;
+        } else {
+            // Fallback jika API Nominatim gagal atau kota tidak ditemukan
+            $seed = md5(strtolower($validated['asal'] . $validated['tujuan']));
+            $jarak_km = hexdec(substr($seed, 0, 4)) % 1000 + 10; // 10 to 1009 km
+        }
 
         $biaya_berat = $tarif_per_kg * $berat;
         $biaya_jarak = $jarak_km * 200;
@@ -131,7 +177,7 @@ class RateController extends Controller
                 'total' => $total,
                 'rute' => strtoupper($validated['asal']) . ' ➔ ' . strtoupper($validated['tujuan']),
                 'estimasi' => $estimasi,
-                'is_map_success' => true,
+                'is_map_success' => $is_real_distance,
                 'teks_jarak' => "Jarak tempuh rute darat: " . $jarak_km . " km"
             ]
         ]);
