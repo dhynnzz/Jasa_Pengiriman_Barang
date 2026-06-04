@@ -66,76 +66,118 @@ const truckIcon = L.divIcon({
 
 
 
-const LiveTrackingMap = () => {
-    const [progress, setProgress] = useState(0); // 0 to 1 representing total route progress
-    const [truckPosition, setTruckPosition] = useState(routeCoordinates[0]);
-
+const MapUpdater = ({ center, zoom }) => {
+    const map = useMap();
     useEffect(() => {
-        // Simulation loop
-        let currentProgress = 0.4; // Start at 40% for the tracking page
+        map.setView(center, zoom, { animate: true });
+    }, [center, zoom, map]);
+    return null;
+};
 
-        const interval = setInterval(() => {
-            currentProgress += 0.001;
-            if (currentProgress >= 1) currentProgress = 0; // Reset for demo purposes
+const LiveTrackingMap = ({ currentLat, currentLng, driverName, origin, destination }) => {
+    const [originCoords, setOriginCoords] = useState(null);
+    const [destCoords, setDestCoords] = useState(null);
 
-            setProgress(currentProgress);
-
-            // Calculate segment
-            const totalSegments = routeCoordinates.length - 1;
-            const scaledProgress = currentProgress * totalSegments;
-            const segmentIndex = Math.floor(scaledProgress);
-            const segmentFraction = scaledProgress - segmentIndex;
-
-            if (segmentIndex < totalSegments) {
-                const pos = interpolate(routeCoordinates[segmentIndex], routeCoordinates[segmentIndex + 1], segmentFraction);
-                setTruckPosition(pos);
+    // Geocode origin and destination
+    useEffect(() => {
+        const fetchCoordinates = async (place, setter) => {
+            if (!place) return;
+            try {
+                // simple fetch from Nominatim
+                const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(place + ', Indonesia')}`);
+                const data = await res.json();
+                if (data && data.length > 0) {
+                    setter([parseFloat(data[0].lat), parseFloat(data[0].lon)]);
+                }
+            } catch (error) {
+                console.error("Geocoding error for", place, error);
             }
-        }, 100);
+        };
 
-        return () => clearInterval(interval);
-    }, []);
+        fetchCoordinates(origin, setOriginCoords);
+        fetchCoordinates(destination, setDestCoords);
+    }, [origin, destination]);
+
+    const hasRealLocation = currentLat && currentLng;
+    const truckPosition = hasRealLocation ? [parseFloat(currentLat), parseFloat(currentLng)] : null;
+    
+    // Default fallback to center of Java if nothing is found
+    const fallbackCenter = [-7.1509, 110.1402];
+    
+    let mapCenter = fallbackCenter;
+    let mapZoom = 6;
+
+    if (truckPosition) {
+        mapCenter = truckPosition;
+        mapZoom = 12;
+    } else if (originCoords && destCoords) {
+        // center between origin and dest
+        mapCenter = [
+            (originCoords[0] + destCoords[0]) / 2,
+            (originCoords[1] + destCoords[1]) / 2
+        ];
+        mapZoom = 7;
+    } else if (originCoords) {
+        mapCenter = originCoords;
+        mapZoom = 10;
+    }
+
+    // Build the polyline route
+    const routeLine = [];
+    if (originCoords) routeLine.push(originCoords);
+    if (truckPosition) routeLine.push(truckPosition);
+    if (destCoords) routeLine.push(destCoords);
 
     return (
         <div className="w-full h-full relative z-0">
             <MapContainer
-                center={[-6.8, 109.5]}
-                zoom={7}
+                center={mapCenter}
+                zoom={mapZoom}
                 scrollWheelZoom={false}
                 className="w-full h-full z-0"
             >
+                <MapUpdater center={mapCenter} zoom={mapZoom} />
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution='&copy; OpenStreetMap'
                 />
 
-                <Polyline
-                    positions={routeCoordinates}
-                    color="#0ea5e9"
-                    weight={4}
-                    opacity={0.7}
-                    dashArray="10, 10"
-                />
+                {routeLine.length > 1 && (
+                    <Polyline
+                        positions={routeLine}
+                        color="#0ea5e9"
+                        weight={4}
+                        opacity={0.5}
+                        dashArray="10, 10"
+                    />
+                )}
 
-                <Marker position={routeCoordinates[0]} icon={originIcon}>
-                    <Tooltip direction="top" offset={[0, -10]} opacity={1} permanent>
-                        <span className="font-bold text-xs">Origin: Jakarta</span>
-                    </Tooltip>
-                </Marker>
+                {originCoords && (
+                    <Marker position={originCoords} icon={originIcon}>
+                        <Tooltip direction="top" offset={[0, -10]} opacity={1} permanent>
+                            <span className="font-bold text-xs">Asal: {origin}</span>
+                        </Tooltip>
+                    </Marker>
+                )}
 
-                <Marker position={routeCoordinates[routeCoordinates.length - 1]} icon={destIcon}>
-                    <Tooltip direction="top" offset={[0, -10]} opacity={1} permanent>
-                        <span className="font-bold text-xs">Dest: Surabaya</span>
-                    </Tooltip>
-                </Marker>
+                {destCoords && (
+                    <Marker position={destCoords} icon={destIcon}>
+                        <Tooltip direction="top" offset={[0, -10]} opacity={1} permanent>
+                            <span className="font-bold text-xs">Tujuan: {destination}</span>
+                        </Tooltip>
+                    </Marker>
+                )}
 
-                <Marker position={truckPosition} icon={truckIcon} zIndexOffset={1000}>
-                    <Tooltip direction="bottom" offset={[0, 10]} opacity={1} permanent>
-                        <span className="font-bold text-green-600 text-xs flex items-center gap-1">
-                            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse inline-block mr-1"></span>
-                            Live: B 9021 XX
-                        </span>
-                    </Tooltip>
-                </Marker>
+                {truckPosition && (
+                    <Marker position={truckPosition} icon={truckIcon} zIndexOffset={1000}>
+                        <Tooltip direction="bottom" offset={[0, 10]} opacity={1} permanent>
+                            <span className="font-bold text-green-600 text-xs flex items-center gap-1">
+                                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse inline-block mr-1"></span>
+                                Live: {driverName || 'Kurir'}
+                            </span>
+                        </Tooltip>
+                    </Marker>
+                )}
             </MapContainer>
         </div>
     );

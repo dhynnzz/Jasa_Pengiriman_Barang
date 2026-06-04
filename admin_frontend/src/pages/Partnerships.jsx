@@ -206,18 +206,22 @@ export default function Partnerships() {
                   </td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex justify-end gap-1">
-                      <button 
-                        onClick={() => updateStatus(p.id, 'Disetujui', p.name, p.phone)}
-                        title="Setujui"
-                        className="p-2 text-green-600 hover:bg-green-50 rounded-lg">
-                        <CheckCircle className="w-4 h-4" />
-                      </button>
-                      <button 
-                        onClick={() => updateStatus(p.id, 'Ditolak', p.name, p.phone)}
-                        title="Tolak"
-                        className="p-2 text-red-600 hover:bg-red-50 rounded-lg">
-                        <XCircle className="w-4 h-4" />
-                      </button>
+                      {p.status !== 'Ditolak' && (
+                        <button 
+                          onClick={() => updateStatus(p.id, 'Disetujui', p.name, p.phone)}
+                          title="Setujui"
+                          className="p-2 text-green-600 hover:bg-green-50 rounded-lg">
+                          <CheckCircle className="w-4 h-4" />
+                        </button>
+                      )}
+                      {p.status !== 'Disetujui' && (
+                        <button 
+                          onClick={() => updateStatus(p.id, 'Ditolak', p.name, p.phone)}
+                          title="Tolak"
+                          className="p-2 text-red-600 hover:bg-red-50 rounded-lg">
+                          <XCircle className="w-4 h-4" />
+                        </button>
+                      )}
                       <button 
                         onClick={() => handleDelete(p.id)}
                         title="Hapus"

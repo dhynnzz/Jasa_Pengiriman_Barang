@@ -14,13 +14,28 @@ use App\Http\Controllers\PartnershipController;
 
 // Auth Route
 Route::post('/admin/login', [AuthController::class, 'login']);
+Route::post('/driver/register', [AuthController::class, 'driverRegister']);
+Route::post('/driver/login', [AuthController::class, 'driverLogin']);
+Route::post('/customer/register', [AuthController::class, 'customerRegister']);
+Route::post('/customer/login', [AuthController::class, 'customerLogin']);
+
+// Protected Routes (Sanctum)
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/customer/shipments', [\App\Http\Controllers\Admin\ShipmentController::class, 'customerShipments']);
+    Route::post('/customer/shipments/save', [\App\Http\Controllers\Admin\ShipmentController::class, 'saveCustomerShipment']);
+    Route::get('/driver/stats', [\App\Http\Controllers\Admin\ShipmentController::class, 'driverStats']);
+});
 
 // Public Routes (if needed)
 Route::get('/branches', [BranchController::class, 'index']); // Public access to branches
 Route::post('/partnerships', [PartnershipController::class, 'store']); // Public submit form
 Route::post('/calculate-rate', [RateController::class, 'calculatePublic']); // Public calculate rate
 Route::get('/tracking/{resi}', [\App\Http\Controllers\Admin\ShipmentController::class, 'track']); // Public tracking
+Route::post('/driver/update-location', [\App\Http\Controllers\Admin\ShipmentController::class, 'updateLocation']); // Driver GPS update
+Route::post('/driver/mark-delivered', [\App\Http\Controllers\Admin\ShipmentController::class, 'markAsDelivered']); // Quick mark delivered
+Route::post('/driver/auto-history', [\App\Http\Controllers\Admin\ShipmentController::class, 'autoHistory']); // Auto history location
 Route::post('/chat', [\App\Http\Controllers\ChatController::class, 'send']); // Public AI chat
+Route::post('/public/shipments', [\App\Http\Controllers\PublicShipmentController::class, 'store']); // Public create shipment
 
 // Protected Admin Routes
 Route::middleware('auth:sanctum')->group(function () {

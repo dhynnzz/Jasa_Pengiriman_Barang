@@ -12,6 +12,10 @@ import Tracking from './pages/Tracking';
 import CoverageMap from './pages/CoverageMap';
 import Track from './pages/Track';
 import Partnership from './pages/Partnership';
+import DriverGPS from './pages/DriverGPS';
+import DriverLogin from './pages/DriverLogin';
+import DriverRegister from './pages/DriverRegister';
+import Order from './pages/Order';
 
 import { Toaster } from 'react-hot-toast';
 import AILiveChat from './components/AILiveChat';
@@ -39,6 +43,10 @@ function App() {
             <Route path="/coverage-map" element={<CoverageMap />} />
             <Route path="/track" element={<Track />} />
             <Route path="/partnership" element={<Partnership />} />
+            <Route path="/driver" element={<DriverGPS />} />
+            <Route path="/driver/login" element={<DriverLogin />} />
+            <Route path="/driver/register" element={<DriverRegister />} />
+            <Route path="/order" element={<Order />} />
           </Routes>
         </main>
         <Footer />

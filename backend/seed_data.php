@@ -18,7 +18,9 @@ $shipment = \App\Models\Shipment::create([
     'origin' => 'Pusat Distribusi Gempol',
     'destination' => 'PT. Solusi Teknologi Utama',
     'origin_address' => 'Gempol, Pasuruan',
-    'destination_address' => 'Kecamatan Gubeng, Surabaya, Jawa Timur, 60281'
+    'destination_address' => 'Kecamatan Gubeng, Surabaya, Jawa Timur, 60281',
+    'current_lat' => -6.9829,
+    'current_lng' => 110.4300
 ]);
 
 $shipment->histories()->createMany([

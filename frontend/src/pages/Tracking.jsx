@@ -49,6 +49,36 @@ export default function Tracking() {
     }
   };
 
+  useEffect(() => {
+    let intervalId;
+    
+    if (shipment && searchAttempted) {
+      // Poll every 5 seconds for live tracking updates
+      intervalId = setInterval(async () => {
+        try {
+          const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+          const response = await axios.get(`${API_URL}/tracking/${resi}`);
+          if (response.data.success) {
+            setShipment(prev => {
+              const newData = response.data.data;
+              // Update state only if coordinates changed
+              if (prev && (prev.current_lat !== newData.current_lat || prev.current_lng !== newData.current_lng)) {
+                return newData;
+              }
+              return prev;
+            });
+          }
+        } catch (err) {
+          console.error("Polling error:", err);
+        }
+      }, 5000);
+    }
+
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [shipment, searchAttempted, resi]);
+
   return (
     <Layout>
       <SEO title="Lacak Paket" description="Pantau status dan pergerakan paket Anda secara live melalui fitur tracking Nabila Trans." />
@@ -72,7 +102,7 @@ export default function Tracking() {
                     type="text"
                     value={resi}
                     onChange={(e) => setResi(e.target.value)}
-                    placeholder="NBL-VCRMFI1L"
+                    placeholder="NBL-8829441029"
                     className="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-gray-700 font-bold"
                     required
                   />
@@ -157,50 +187,124 @@ export default function Tracking() {
                 </div>
 
                 {/* Progress */}
-                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 lg:p-8">
-                  <div className="flex justify-between items-end mb-6">
-                    <div>
-                      <p className="text-xs text-gray-400 font-bold uppercase tracking-wider mb-1">Kemajuan</p>
-                      <h3 className="text-3xl font-extrabold text-blue-950">{shipment.progress_percentage}% <span className="text-lg text-gray-500 font-medium">Selesai</span></h3>
-                    </div>
-                    <div className="bg-blue-50 text-blue-800 px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2 border border-blue-100">
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                      2 Hari 4 Jam tersisa
-                    </div>
-                  </div>
+                {(() => {
+                  let p = shipment.progress_percentage || 0;
+                  
+                  // Calculate real-time progress based on map coordinates if available
+                  if (shipment.current_lat && shipment.current_lng) {
+                    const originLat = -6.2088;
+                    const originLng = 106.8456;
+                    const destLat = -7.2504;
+                    const destLng = 112.7688;
+                    const curLat = parseFloat(shipment.current_lat);
+                    const curLng = parseFloat(shipment.current_lng);
+                    
+                    const getDist = (lat1, lon1, lat2, lon2) => {
+                      const R = 6371;
+                      const dLat = (lat2-lat1) * (Math.PI/180);
+                      const dLon = (lon2-lon1) * (Math.PI/180);
+                      const a = Math.sin(dLat/2)*Math.sin(dLat/2) + Math.cos(lat1*(Math.PI/180))*Math.cos(lat2*(Math.PI/180))*Math.sin(dLon/2)*Math.sin(dLon/2);
+                      return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                    };
+                    
+                    const totalDist = getDist(originLat, originLng, destLat, destLng);
+                    const distToDest = getDist(curLat, curLng, destLat, destLng);
+                    
+                    let calcP = ((totalDist - distToDest) / totalDist) * 100;
+                    
+                    // Ensure minimum 50% so it's always in "Dalam Perjalanan" if tracked, unless it's genuinely arrived (100)
+                    p = Math.max(50, Math.min(100, Math.round(calcP)));
+                  }
 
-                  <div className="relative mb-10 mt-10">
-                    {/* Progress Bar line */}
-                    <div className="absolute top-1/2 left-0 right-0 h-1.5 bg-gray-200 rounded-full -translate-y-1/2"></div>
-                    <div className="absolute top-1/2 left-0 h-1.5 bg-orange-500 rounded-full -translate-y-1/2" style={{ width: `${shipment.progress_percentage}%` }}></div>
+                  const isDelivered = p >= 100;
 
-                    {/* Steps */}
-                    <div className="relative flex justify-between">
-                      <div className="flex flex-col items-center">
-                        <div className="w-4 h-4 bg-orange-500 rounded-full border-4 border-white shadow"></div>
-                        <p className="text-[10px] font-bold text-blue-950 uppercase mt-3">Pesan</p>
-                        <p className="text-[9px] text-gray-400 mt-0.5">20 Oktober, 09:00 AM</p>
-                      </div>
-                      <div className="flex flex-col items-center">
-                        <div className="w-4 h-4 bg-orange-500 rounded-full border-4 border-white shadow"></div>
-                        <p className="text-[10px] font-bold text-blue-950 uppercase mt-3">Penjemputan</p>
-                        <p className="text-[9px] text-gray-400 mt-0.5">21 Oktober, 02:30 PM</p>
-                      </div>
-                      <div className="flex flex-col items-center">
-                        <div className="w-6 h-6 bg-orange-500 rounded-full border-4 border-white shadow flex items-center justify-center -translate-y-1">
-                          <div className="w-2 h-2 bg-white rounded-full"></div>
+                  return (
+                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 lg:p-8">
+                      <div className="flex justify-between items-end mb-6">
+                        <div>
+                          <p className="text-xs text-gray-400 font-bold uppercase tracking-wider mb-1">Kemajuan</p>
+                          <h3 className="text-3xl font-extrabold text-blue-950">{p}% <span className="text-lg text-gray-500 font-medium">Selesai</span></h3>
                         </div>
-                        <p className="text-[10px] font-bold text-orange-500 uppercase mt-2">Dalam Perjalanan</p>
-                        <p className="text-[9px] text-gray-400 mt-0.5">Sedang Berlangsung</p>
+                        <div className="bg-blue-50 text-blue-800 px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2 border border-blue-100">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                          2 Hari 4 Jam tersisa
+                        </div>
                       </div>
-                      <div className="flex flex-col items-center">
-                        <div className="w-4 h-4 bg-gray-300 rounded-full border-4 border-white shadow"></div>
-                        <p className="text-[10px] font-bold text-gray-400 uppercase mt-3">Disampaikan</p>
-                        <p className="text-[9px] text-gray-300 mt-0.5">Tertunda</p>
-                      </div>
+
+                      <div className="relative mb-10 mt-10">
+                        {/* Progress Bar line */}
+                        <div className="absolute top-1/2 left-0 right-0 h-1.5 bg-gray-200 rounded-full -translate-y-1/2"></div>
+                        <div className="absolute top-1/2 left-0 h-1.5 bg-orange-500 rounded-full -translate-y-1/2" style={{ width: `${p}%`, transition: 'width 1s ease-in-out' }}></div>
+
+                        {/* Steps */}
+                        <div className="relative flex justify-between">
+                          {(() => {
+                            const chronological = [...(shipment.histories || [])].reverse();
+                            const ordered = chronological.length > 0 ? chronological[0] : null;
+                            const pickedUp = chronological.find(h => h.status_title.toLowerCase().includes('diambil') || h.status_title.toLowerCase().includes('penjemputan')) || (chronological.length > 1 ? chronological[1] : null);
+                            const inTransit = chronological.find(h => h.status_title.toLowerCase().includes('perjalanan') || h.status_title.toLowerCase().includes('berangkat') || h.status_title.toLowerCase().includes('hub')) || (chronological.length > 2 ? chronological[2] : null);
+                            const delivered = chronological.find(h => h.status_title.toLowerCase().includes('disampaikan') || h.status_title.toLowerCase().includes('terkirim') || h.status_title.toLowerCase().includes('selesai'));
+
+                        const formatDate = (dateString) => {
+                          if (!dateString) return 'Tertunda';
+                          try {
+                            const d = new Date(dateString);
+                            if (isNaN(d.getTime())) return dateString;
+                            const day = d.getDate();
+                            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+                            const month = months[d.getMonth()];
+                            let hours = d.getHours();
+                            const minutes = d.getMinutes().toString().padStart(2, '0');
+                            const ampm = hours >= 12 ? 'PM' : 'AM';
+                            hours = hours % 12;
+                            hours = hours ? hours : 12; 
+                            return `${day} ${month}, ${hours.toString().padStart(2, '0')}:${minutes} ${ampm}`;
+                          } catch (e) {
+                            return dateString;
+                          }
+                        };
+
+                        return (
+                          <>
+                            <div className="flex flex-col items-center">
+                              <div className={`rounded-full border-4 border-white shadow ${p >= 0 ? (p < 25 ? 'w-6 h-6 flex items-center justify-center -translate-y-1 bg-orange-500' : 'w-4 h-4 bg-orange-500') : 'w-4 h-4 bg-gray-300'}`}>
+                                {p >= 0 && p < 25 && <div className="w-2 h-2 bg-white rounded-full"></div>}
+                              </div>
+                              <p className={`text-[10px] font-bold uppercase mt-${p >= 0 && p < 25 ? '2' : '3'} ${p >= 0 ? 'text-blue-950' : 'text-gray-400'}`}>Pesan</p>
+                              <p className="text-[9px] text-gray-400 mt-0.5 whitespace-nowrap">{ordered ? formatDate(ordered.occurred_at) : 'Tertunda'}</p>
+                            </div>
+                            
+                            <div className="flex flex-col items-center">
+                              <div className={`rounded-full border-4 border-white shadow ${p >= 25 ? (p >= 25 && p < 50 ? 'w-6 h-6 flex items-center justify-center -translate-y-1 bg-orange-500' : 'w-4 h-4 bg-orange-500') : 'w-4 h-4 bg-gray-300'}`}>
+                                {p >= 25 && p < 50 && <div className="w-2 h-2 bg-white rounded-full"></div>}
+                              </div>
+                              <p className={`text-[10px] font-bold uppercase mt-${p >= 25 && p < 50 ? '2' : '3'} ${p >= 25 ? 'text-blue-950' : 'text-gray-400'}`}>Penjemputan</p>
+                              <p className="text-[9px] text-gray-400 mt-0.5 whitespace-nowrap">{pickedUp ? formatDate(pickedUp.occurred_at) : 'Tertunda'}</p>
+                            </div>
+                            
+                            <div className="flex flex-col items-center">
+                              <div className={`rounded-full border-4 border-white shadow ${p >= 50 ? (p >= 50 && p < 100 ? 'w-6 h-6 flex items-center justify-center -translate-y-1 bg-orange-500' : 'w-4 h-4 bg-orange-500') : 'w-4 h-4 bg-gray-300'}`}>
+                                {p >= 50 && p < 100 && <div className="w-2 h-2 bg-white rounded-full"></div>}
+                              </div>
+                              <p className={`text-[10px] font-bold uppercase mt-${p >= 50 && p < 100 ? '2' : '3'} ${p >= 50 && p < 100 ? 'text-orange-500' : (p >= 50 ? 'text-blue-950' : 'text-gray-400')}`}>Dalam Perjalanan</p>
+                              <p className="text-[9px] text-gray-400 mt-0.5 whitespace-nowrap">{inTransit ? (p >= 50 && p < 100 ? 'Sedang Berlangsung' : formatDate(inTransit.occurred_at)) : 'Tertunda'}</p>
+                            </div>
+                            
+                            <div className="flex flex-col items-center">
+                              <div className={`rounded-full border-4 border-white shadow ${isDelivered ? 'w-6 h-6 flex items-center justify-center -translate-y-1 bg-green-500' : 'w-4 h-4 bg-gray-300'}`}>
+                                {isDelivered && <div className="w-2 h-2 bg-white rounded-full"></div>}
+                              </div>
+                              <p className={`text-[10px] font-bold uppercase mt-${isDelivered ? '2' : '3'} ${isDelivered ? 'text-green-600' : 'text-gray-400'}`}>Disampaikan</p>
+                              <p className="text-[9px] text-gray-400 mt-0.5 whitespace-nowrap">{delivered ? formatDate(delivered.occurred_at) : 'Tertunda'}</p>
+                            </div>
+                          </>
+                        );
+                      })()}
                     </div>
                   </div>
                 </div>
+              );
+            })()}
 
                 {/* Map Mockup */}
                 <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden relative">
@@ -209,15 +313,17 @@ export default function Tracking() {
                     PEMBARUAN LANGSUNG TERSEDIA
                   </div>
                   <div className="w-full h-64 relative z-0 bg-slate-100">
-                    <LiveTrackingMap />
+                    <LiveTrackingMap 
+                      currentLat={shipment.current_lat}
+                      currentLng={shipment.current_lng}
+                      driverName={shipment.driver_name}
+                      origin={shipment.origin}
+                      destination={shipment.destination}
+                    />
                   </div>
                   <div className="absolute bottom-4 left-4 z-10 bg-blue-950 text-white px-4 py-3 rounded-lg shadow-lg max-w-xs pointer-events-none">
                     <p className="text-[10px] font-bold text-blue-300 uppercase mb-1">Tujuan Berikutnya</p>
-                    <p className="text-sm font-bold">Gudang Utama Surabaya</p>
-                    <p className="text-xs text-gray-400 flex items-center gap-1 mt-1">
-                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-                      240 KM Inbound
-                    </p>
+                    <p className="text-sm font-bold">{shipment.destination}</p>
                   </div>
                 </div>
 
@@ -228,10 +334,29 @@ export default function Tracking() {
 
                     {shipment.histories.map((history, idx) => (
                       <div className="relative" key={idx}>
-                        <div className={`absolute -left-[23px] top-1 w-4 h-4 rounded-full ${history.active ? 'bg-orange-500 ring-4 ring-orange-50' : 'bg-blue-950'}`}></div>
+                        <div className={`absolute -left-[23px] top-1 w-4 h-4 rounded-full ${idx === 0 ? 'bg-orange-500 ring-4 ring-orange-50' : 'bg-blue-950'}`}></div>
                         <div className="flex justify-between items-start mb-2">
                           <h4 className="font-bold text-blue-950 text-base">{history.status_title}</h4>
-                          <span className="text-xs font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap ml-4">{history.occurred_at}</span>
+                          <span className="text-xs font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap ml-4">
+                            {/* Format the date dynamically for histories too */}
+                            {(() => {
+                              try {
+                                const d = new Date(history.occurred_at);
+                                if (isNaN(d.getTime())) return history.occurred_at;
+                                const day = d.getDate();
+                                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+                                const month = months[d.getMonth()];
+                                let hours = d.getHours();
+                                const minutes = d.getMinutes().toString().padStart(2, '0');
+                                const ampm = hours >= 12 ? 'PM' : 'AM';
+                                hours = hours % 12;
+                                hours = hours ? hours : 12; 
+                                return `${day} ${month}, ${hours.toString().padStart(2, '0')}:${minutes} ${ampm}`;
+                              } catch (e) {
+                                return history.occurred_at;
+                              }
+                            })()}
+                          </span>
                         </div>
                         <p className="text-gray-500 text-sm leading-relaxed mb-2">{history.description}</p>
                         {history.location && (
@@ -305,6 +430,7 @@ export default function Tracking() {
                       <div>
                         <p className="text-[11px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">Titik Penjemputan</p>
                         <p className="font-bold text-blue-950 mb-1">{shipment.origin}</p>
+                        {shipment.sender_name && <p className="text-xs font-bold text-gray-700">{shipment.sender_name}</p>}
                         <p className="text-xs text-gray-500">{shipment.origin_address}</p>
                       </div>
                     </div>
@@ -316,6 +442,7 @@ export default function Tracking() {
                       <div>
                         <p className="text-[11px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">Alamat Penerima</p>
                         <p className="font-bold text-blue-950 mb-1">{shipment.destination}</p>
+                        {shipment.receiver_name && <p className="text-xs font-bold text-gray-700">{shipment.receiver_name}</p>}
                         <p className="text-xs text-gray-500 leading-relaxed">{shipment.destination_address}</p>
                       </div>
                     </div>
@@ -342,11 +469,11 @@ export default function Tracking() {
           </motion.div>
         ) : searchAttempted ? (
           <div className="max-w-3xl mx-auto px-4 mt-8 text-center text-gray-600">
-            Resi <span className="font-bold text-blue-950">{resi}</span> tidak ditemukan. Pastikan Anda memasukkan nomor dengan benar. Untuk demo, coba "NBL-VCRMFI1L".
+            Resi <span className="font-bold text-blue-950">{resi}</span> tidak ditemukan. Pastikan Anda memasukkan nomor dengan benar. Untuk demo, coba "NBL-8829441029".
           </div>
         ) : (
           <div className="max-w-3xl mx-auto px-4 mt-8 text-center text-gray-500 text-sm">
-            Masukkan nomor resi Anda untuk melihat detail pelacakan. <br />(Demo tracking: <strong>NBL-VCRMFI1L</strong>)
+            Masukkan nomor resi Anda untuk melihat detail pelacakan. <br />(Demo tracking: <strong>NBL-8829441029</strong>)
           </div>
         )}
       </div>

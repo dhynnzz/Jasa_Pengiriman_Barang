@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import AdminLayout from '../components/AdminLayout';
-import { Plus, Search, Edit2, MapPin, Trash2, Printer, Download } from 'lucide-react';
+import { Plus, Search, Edit2, MapPin, Trash2, Printer, Download, CheckCircle } from 'lucide-react';
 
 export default function Shipments() {
   const navigate = useNavigate();
@@ -20,7 +20,14 @@ export default function Shipments() {
     status: 'Picked Up',
     driver_name: '',
     estimated_time: '',
-    current_location: ''
+    current_location: '',
+    weight: '',
+    dimensions: '',
+    insurance: 'Tidak Ada',
+    origin_address: '',
+    destination_address: '',
+    sender_name: '',
+    receiver_name: ''
   });
 
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
@@ -90,7 +97,14 @@ export default function Shipments() {
         status: 'Picked Up',
         driver_name: '',
         estimated_time: '',
-        current_location: ''
+        current_location: '',
+        weight: '',
+        dimensions: '',
+        insurance: 'Tidak Ada',
+        origin_address: '',
+        destination_address: '',
+        sender_name: '',
+        receiver_name: ''
       });
     } catch (error) {
       toast.error('Gagal menambahkan resi');
@@ -263,6 +277,7 @@ export default function Shipments() {
                       <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                         shipment.status === 'Delivered' ? 'bg-green-100 text-green-700' :
                         shipment.status === 'In Transit' ? 'bg-blue-100 text-blue-700' :
+                        shipment.status === 'Menunggu Penjemputan' ? 'bg-yellow-100 text-yellow-800 border border-yellow-200' :
                         'bg-gray-100 text-gray-700'
                       }`}>
                         {shipment.status}
@@ -273,9 +288,22 @@ export default function Shipments() {
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex justify-end gap-2">
-                        <button onClick={() => openUpdateModal(shipment)} title="Update Perjalanan" className="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors">
-                          <MapPin className="w-4 h-4" />
-                        </button>
+                        {shipment.status !== 'Delivered' && (
+                          <button onClick={async () => {
+                            if(window.confirm('Tandai resi ini sebagai Selesai (Delivered)?')) {
+                              try {
+                                const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+                                await axios.post(`${API_URL}/driver/mark-delivered`, { tracking_number: shipment.tracking_number });
+                                toast.success('Resi berhasil ditandai Selesai');
+                                fetchShipments();
+                              } catch (error) {
+                                toast.error('Gagal memperbarui status');
+                              }
+                            }
+                          }} title="Tandai Selesai" className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors">
+                            <CheckCircle className="w-4 h-4" />
+                          </button>
+                        )}
                         <button onClick={() => navigate(`/print/${shipment.id}`)} title="Cetak Resi" className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
                           <Printer className="w-4 h-4" />
                         </button>
@@ -307,12 +335,49 @@ export default function Shipments() {
                   <div className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700">Asal</label>
+                        <label className="block text-sm font-medium text-gray-700">Nama Pengirim</label>
+                        <input type="text" value={formData.sender_name} onChange={e => setFormData({...formData, sender_name: e.target.value})} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-2 px-3 border" placeholder="Nama Pengirim" />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">Nama Penerima</label>
+                        <input type="text" value={formData.receiver_name} onChange={e => setFormData({...formData, receiver_name: e.target.value})} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-2 px-3 border" placeholder="Nama Penerima" />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">Kota Asal</label>
                         <input type="text" required value={formData.origin} onChange={e => setFormData({...formData, origin: e.target.value})} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-2 px-3 border" placeholder="Kota Asal" />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700">Tujuan</label>
+                        <label className="block text-sm font-medium text-gray-700">Kota Tujuan</label>
                         <input type="text" required value={formData.destination} onChange={e => setFormData({...formData, destination: e.target.value})} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-2 px-3 border" placeholder="Kota Tujuan" />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">Alamat Lengkap Asal</label>
+                        <input type="text" value={formData.origin_address} onChange={e => setFormData({...formData, origin_address: e.target.value})} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-2 px-3 border" placeholder="Alamat Asal" />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">Alamat Lengkap Tujuan</label>
+                        <input type="text" value={formData.destination_address} onChange={e => setFormData({...formData, destination_address: e.target.value})} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-2 px-3 border" placeholder="Alamat Tujuan" />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-3 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">Berat (Kg)</label>
+                        <input type="number" step="0.1" value={formData.weight} onChange={e => setFormData({...formData, weight: e.target.value})} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-2 px-3 border" placeholder="Misal: 1.5" />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">Dimensi (cm)</label>
+                        <input type="text" value={formData.dimensions} onChange={e => setFormData({...formData, dimensions: e.target.value})} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-2 px-3 border" placeholder="Misal: 20x10x10" />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">Asuransi</label>
+                        <select value={formData.insurance} onChange={e => setFormData({...formData, insurance: e.target.value})} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-2 px-3 border bg-white">
+                          <option value="Tidak Ada">Tidak Ada</option>
+                          <option value="Ya">Ya</option>
+                        </select>
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-4">
