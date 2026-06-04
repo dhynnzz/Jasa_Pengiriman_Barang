@@ -1,6 +1,22 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+import axios from 'axios';
+
+// Global Axios Interceptor to handle expired tokens
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      // Token is invalid/expired according to backend
+      localStorage.removeItem('adminToken');
+      localStorage.removeItem('adminRole');
+      localStorage.removeItem('adminUser');
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
 
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
