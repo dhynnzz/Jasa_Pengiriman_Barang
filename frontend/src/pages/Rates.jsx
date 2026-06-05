@@ -19,6 +19,21 @@ export default function Rates() {
   const hitungBiaya = async () => {
     setIsLoading(true);
     setError('');
+    setResult(null);
+
+    // Validasi Frontend
+    if (!asal.trim() || !tujuan.trim()) {
+      setError('Mohon isi Asal Kota dan Tujuan Kota.');
+      setIsLoading(false);
+      return;
+    }
+
+    const beratNum = Number(berat);
+    if (!berat || isNaN(beratNum) || beratNum < 1) {
+      setError('Berat barang harus diisi dengan angka minimal 1 kg.');
+      setIsLoading(false);
+      return;
+    }
 
     try {
       const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
