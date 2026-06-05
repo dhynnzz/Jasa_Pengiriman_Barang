@@ -5,6 +5,24 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
+use Illuminate\Support\Facades\Artisan;
+
+// Secret route to run migrations from Vercel (since local lacks IPv6)
+Route::get('/run-migrations-secret-123', function () {
+    try {
+        Artisan::call('migrate:fresh', ['--force' => true, '--seed' => true]);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Migrations and seeding completed successfully!',
+            'output' => Artisan::output()
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => $e->getMessage()
+        ], 500);
+    }
+});
 use App\Http\Controllers\Admin\ShipmentController;
 use App\Http\Controllers\Admin\RateController;
 
