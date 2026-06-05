@@ -43,7 +43,11 @@ export default function Rates() {
       }
     } catch (err) {
       console.error("API error:", err);
-      setError("Gagal terhubung ke server backend Laravel. Periksa koneksi atau pastikan server berjalan.");
+      if (err.response && err.response.data && err.response.data.message) {
+        setError(err.response.data.message);
+      } else {
+        setError("Gagal terhubung ke server backend Laravel. Periksa koneksi atau pastikan server berjalan.");
+      }
     } finally {
       setIsLoading(false);
     }

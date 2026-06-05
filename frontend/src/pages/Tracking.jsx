@@ -39,6 +39,9 @@ export default function Tracking() {
       if (err.response && err.response.status === 404) {
         setError('Resi tidak ditemukan. Pastikan Anda memasukkan nomor dengan benar.');
         toast.error('Resi tidak ditemukan!', { id: 'search-toast' });
+      } else if (err.response && err.response.data && err.response.data.message) {
+        setError(err.response.data.message);
+        toast.error(err.response.data.message, { id: 'search-toast' });
       } else {
         console.error("API error:", err);
         setError("Gagal terhubung ke server backend. Periksa koneksi Anda.");
