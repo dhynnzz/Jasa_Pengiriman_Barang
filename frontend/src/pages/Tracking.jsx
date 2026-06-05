@@ -102,7 +102,7 @@ export default function Tracking() {
                     type="text"
                     value={resi}
                     onChange={(e) => setResi(e.target.value)}
-                    placeholder="NBL-8829441029"
+                    placeholder="NBL-MB7XJR8N"
                     className="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-gray-700 font-bold"
                     required
                   />
@@ -469,11 +469,11 @@ export default function Tracking() {
           </motion.div>
         ) : searchAttempted ? (
           <div className="max-w-3xl mx-auto px-4 mt-8 text-center text-gray-600">
-            Resi <span className="font-bold text-blue-950">{resi}</span> tidak ditemukan. Pastikan Anda memasukkan nomor dengan benar. Untuk demo, coba "NBL-8829441029".
+            Resi <span className="font-bold text-blue-950">{resi}</span> tidak ditemukan. Pastikan Anda memasukkan nomor dengan benar. Untuk demo, coba "NBL-MB7XJR8N".
           </div>
         ) : (
           <div className="max-w-3xl mx-auto px-4 mt-8 text-center text-gray-500 text-sm">
-            Masukkan nomor resi Anda untuk melihat detail pelacakan. <br />(Demo tracking: <strong>NBL-8829441029</strong>)
+            Masukkan nomor resi Anda untuk melihat detail pelacakan. <br />(Demo tracking: <strong>NBL-MB7XJR8N</strong>)
           </div>
         )}
       </div>

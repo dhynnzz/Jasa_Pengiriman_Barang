@@ -233,7 +233,7 @@ export default function DriverGPS() {
                 type="text"
                 value={resi}
                 onChange={(e) => setResi(e.target.value)}
-                placeholder="NBL-8829441029"
+                placeholder="NBL-MB7XJR8N"
                 className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all font-bold text-center uppercase"
                 required
               />

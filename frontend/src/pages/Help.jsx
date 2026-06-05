@@ -59,7 +59,7 @@ export default function Help() {
                 </div>
                 {openFaq === 0 && (
                   <div className="px-6 pb-6 text-gray-600 leading-relaxed">
-                    Anda dapat melacak paket dengan memasukkan Nomor Resi (misal: NBL-8829441029) di halaman Tracking kami. Sistem akan menampilkan status real-time, lokasi saat ini, serta estimasi waktu kedatangan.
+                    Anda dapat melacak paket dengan memasukkan Nomor Resi (misal: NBL-MB7XJR8N) di halaman Tracking kami. Sistem akan menampilkan status real-time, lokasi saat ini, serta estimasi waktu kedatangan.
                   </div>
                 )}
               </div>
